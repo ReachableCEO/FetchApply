@@ -34,10 +34,10 @@ function global-configureAptRepos()
 echo "Now running $FUNCNAME...."
 
 echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list
-curl --insecure -s https://webmin.com/jcameron-key.asc | gpg --dearmor >/etc/apt/trusted.gpg.d/jcameron-key.gpg 
+curl --silent -q --insecure -s https://webmin.com/jcameron-key.asc | gpg --dearmor >/etc/apt/trusted.gpg.d/jcameron-key.gpg 
 
 echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
-curl --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
+curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
 
 
 echo "Completed running $FUNCNAME"
@@ -50,8 +50,8 @@ function global-shellScripts()
 
 echo "Now running $FUNCNAME...."
 
-cp distro /usr/local/bin/distro && chmod +x /usr/local/bin/distro
-cp up2date.sh /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
 echo "Completed running $FUNCNAME"
 
@@ -62,8 +62,8 @@ function global-profileScripts()
 
 echo "Now running $FUNCNAME...."
 
-cp profiled-tsys-shell.sh /etc/profile.d/tsys-shell.sh
-cp profiled-tmux.sh /etc/profile.d/tmux.sh
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tsys-shell.sh > /etc/profile.d/tsys-shell.sh
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tmux.sh > /etc/profile.d/tmux.sh
 
 echo "Completed running $FUNCNAME"
 
@@ -77,7 +77,7 @@ function global-oam()
 echo "Now running $FUNCNAME...."
 
 rm -rf /usr/local/librenms-agent
-cp librenms.tar.gz /usr/local/librenms.tar.gz
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/librenms.tar.gz > /usr/local/librenms.tar.gz
 cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
 cd -
 
@@ -87,7 +87,7 @@ echo "Completed running $FUNCNAME"
 
 
 if [[ ! -f /root/ntpserver ]]; then
-cp ntp.conf /etc/ntp.conf 
+curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install ntp ntpdate
 systemctl stop ntp && ntpdate pfv-dc-02.turnsys.net && systemctl start ntp
 fi
@@ -99,21 +99,23 @@ function global-systemServiceConfigurationFiles()
 echo "Now running $FUNCNAME...."
 
 
-cp aliases /etc/aliases 
-cp rsyslog.conf /etc/rsyslog.conf
-
-#Need to root cause why this breaks DNS.... look in legacy code to find DNS handle/fix bits and merge here...
-#curl -s http://dl.turnsys.net/resolv.conf > /etc/resolv.conf
-
-cp nsswitch.conf /etc/nsswitch.conf
-
+curl --silent http://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
+curl --silent http://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf> /etc/rsyslog.conf
 
 if [ ! -d /root/.ssh ]; then 
 mkdir /root/.ssh/
 fi 
 
+if [ ! -d /localuser/.ssh ]; then 
+mkdir /root/.ssh/
+fi 
+
 if [ ! -L /root/.ssh/authorized_keys ]; then
-cp ssh-authorized-keys /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
+curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
+fi
+
+if [ ! -L /home/localuser/.ssh/authorized_keys ]; then
+curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
 
 echo "Completed running $FUNCNAME"
@@ -190,9 +192,8 @@ telnet \
 postfix \
 webmin 
 
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
-cp netdata-stream.conf /opt/netdata/etc/netdata && systemctl stop netdata && systemctl start netdata
-
+bash <(curl --silent -Ss https://my-netdata.io/kickstart.sh) --dont-wait
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/netdata-stream.conf > /opt/netdata/etc/netdata/stream.conf && systemctl stop netdata && systemctl start netdata
 echo "Completed running $FUNCNAME"
 
 }
@@ -206,7 +207,8 @@ echo "Now running $FUNCNAME...."
 ###Post package deployment bits
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
-cp snmpd.conf /etc/snmp/snmpd.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf && systemctl stop netdata && systemctl start netdata
+
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 
 systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
