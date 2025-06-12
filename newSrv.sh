@@ -33,8 +33,9 @@ function global-configureAptRepos()
 
 echo "Now running $FUNCNAME...."
 
-echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list
-curl --silent -q --insecure -s https://webmin.com/jcameron-key.asc | gpg --dearmor >/etc/apt/trusted.gpg.d/jcameron-key.gpg 
+curl https://raw.githubusercontent.com/webmin/webmin/master/webmin-setup-repo.sh > /tmp/webmin-setup.sh
+sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
+
 
 echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
 curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
@@ -192,8 +193,7 @@ samba \
 autofs \
 adcli \
 telnet \
-postfix \
-webmin 
+postfix 
 
 curl --silent \
   https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --dont-wait
