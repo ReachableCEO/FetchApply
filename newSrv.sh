@@ -102,11 +102,11 @@ echo "Now running $FUNCNAME...."
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf> /etc/rsyslog.conf
 
-if [ ! -d /root/.ssh ]; then 
+if [ ! -d /root/.ssh/ ]; then 
   mkdir /root/.ssh/
 fi 
 
-if [ ! -d /localuser/.ssh ]; then 
+if [ ! -d /localuser/.ssh/ ]; then 
   mkdir /root/.ssh/
 fi 
 
