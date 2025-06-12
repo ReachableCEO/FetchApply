@@ -198,7 +198,7 @@ webmin
 curl --silent \
   https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --dont-wait
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/netdata-stream.conf > /opt/netdata/etc/netdata/stream.conf && systemctl stop netdata && systemctl start netdata
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/netdata-stream.conf > /etc/netdata/stream.conf && systemctl stop netdata && systemctl start netdata
 echo "Completed running $FUNCNAME"
 
 }
