@@ -103,11 +103,11 @@ curl --silent http://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/alia
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf> /etc/rsyslog.conf
 
 if [ ! -d /root/.ssh ]; then 
-mkdir /root/.ssh/
+  mkdir /root/.ssh/
 fi 
 
 if [ ! -d /localuser/.ssh ]; then 
-mkdir /root/.ssh/
+  mkdir /root/.ssh/
 fi 
 
 if [ ! -L /root/.ssh/authorized_keys ]; then
