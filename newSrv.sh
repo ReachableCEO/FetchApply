@@ -86,8 +86,8 @@ echo "Now running $FUNCNAME...."
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf> /etc/rsyslog.conf
 
-export ROOT_SSH_DIR="/root/.ssh"
-export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
+export ROOT_SSH_DIR="/root/.ssh/"
+export LOCALUSER_SSH_DIR="/home/localuser/.ssh/"
 
 if [ ! -d "$ROOT_SSH_DIR" ]; then 
   mkdir /root/.ssh/
