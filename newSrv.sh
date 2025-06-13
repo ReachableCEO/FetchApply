@@ -7,23 +7,6 @@ set -eEu
 set -o pipefail
 set -o functrace
 
-export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
-
-function handle_failure() {
-  local lineno=$2
-  local fn=$3
-  local exitstatus=$4
-  local msg=$5
-  local lineno_fns=${1% 0}
-  if [[ "$lineno_fns" != "0" ]] ; then
-    lineno="${lineno} ${lineno_fns}"
-  fi
-  echo "${BASH_SOURCE[1]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
-}
-
-trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
-
-
 # Start actual script logic here...
 
 
@@ -114,13 +97,10 @@ if [ ! -d "$LOCALUSER_SSH_DIR" ]; then
   mkdir /root/.ssh/
 fi 
 
-if [ ! -L /root/.ssh/authorized_keys ]; then
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
-fi
-
-if [ ! -L /home/localuser/.ssh/authorized_keys ]; then
+chmod 400 /root/.ssh/authorized_keys
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
-fi
+chmod 400 /home/localuser/.ssh/authorized_keys
 
 echo "Completed running $FUNCNAME"
 
