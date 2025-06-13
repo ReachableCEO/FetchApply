@@ -201,7 +201,7 @@ systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostna
 systemctl restart ntp 
 systemctl restart postfix
 
-accton on
+/usr/sbin/accton on
 
 echo "Completed running $FUNCNAME"
 
