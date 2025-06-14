@@ -82,8 +82,8 @@ function global-systemServiceConfigurationFiles()
 echo "Now running $FUNCNAME...."
 
 
-curl --silent http://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
-curl --silent http://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf> /etc/rsyslog.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -91,14 +91,14 @@ export SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
   chmod 400 /root/.ssh/authorized_keys
 fi 
 
 if [ ! -d $LOCALUSER_SSH_DIR ]; then 
   if [ ! -d /home/subodev ]; then
   mkdir /home/localuser/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
+  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
   chmod 400 /home/localuser/.ssh/authorized_keys
   fi
 fi 
@@ -106,7 +106,7 @@ fi
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
   if [ ! -d /home/localuser ]; then
   mkdir /home/subodev/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /home/subodev/.ssh/authorized_keys && chmod 400 /home/subodev/.ssh/authorized_keys
+  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys && chmod 400 /home/subodev/.ssh/authorized_keys
   chmod 400 /home/subodev/.ssh/authorized_keys
   fi
 fi 
