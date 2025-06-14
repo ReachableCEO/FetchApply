@@ -72,7 +72,7 @@ echo "Completed running $FUNCNAME"
 if [[ ! -f /root/ntpserver ]]; then
 curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install ntp ntpdate
-systemctl stop ntp && ntpdate pfv-dc-02.turnsys.net && systemctl start ntp
+systemctl stop ntp && ntpdate pool.ntp.org && systemctl start ntp
 fi
 
 function global-systemServiceConfigurationFiles()
@@ -104,7 +104,7 @@ if [ ! -d $LOCALUSER_SSH_DIR ]; then
 fi 
 
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
-  if [ ! -d /home/localuser]; then
+  if [ ! -d /home/localuser ]; then
   mkdir /home/subodev/.ssh/
   curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys> /home/subodev/.ssh/authorized_keys && chmod 400 /home/subodev/.ssh/authorized_keys
   chmod 400 /home/subodev/.ssh/authorized_keys
