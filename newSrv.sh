@@ -171,6 +171,7 @@ rsyslog  \
 logwatch \
 git \
 rsync \
+net-tools \
 tshark \
 tcpdump \
 sudo \
