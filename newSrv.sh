@@ -178,12 +178,6 @@ sudo \
 lynis \
 qemu-guest-agent \
 zsh \
-sssd \
-sssd-ad \
-krb5-user \
-samba \
-autofs \
-adcli \
 telnet \
 postfix 
 
