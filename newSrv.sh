@@ -8,7 +8,7 @@ set -o functrace
 
 # Start actual script logic here...
 
-function pi-detect{}
+function pi-detect()
 {
 
 if [ -f /sys/firmware/devicetree/base/model ] ; then
