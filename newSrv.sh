@@ -189,10 +189,6 @@ zsh \
 telnet \
 postfix 
 
-curl --silent \
-  https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --dont-wait
-
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/netdata-stream.conf > /etc/netdata/stream.conf && systemctl stop netdata && systemctl start netdata
 echo "Completed running $FUNCNAME"
 
 }
@@ -215,7 +211,6 @@ else
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
-systemctl stop netdata && systemctl start netdata
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
 systemctl restart ntp 
