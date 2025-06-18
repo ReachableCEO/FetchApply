@@ -8,6 +8,15 @@ set -o functrace
 
 # Start actual script logic here...
 
+function pi-detect{}
+{
+
+if [ -f /sys/firmware/devicetree/base/model ] ; then
+export IS_RASPI="1"
+fi
+
+}
+
 
 function global-configureAptRepos()
 
@@ -240,12 +249,12 @@ global-postPackageConfiguration
 ##################################################
 
 ###
-# Proxmox servers
-###
-
-###
 # Raspberry Pi
 ###
+pi-detect
+if [ $IS_RASPI == 1 ] ; then
+  echo "Running on a Raspberry pi..."
+fi
 
 ###
 # Jetson nano
