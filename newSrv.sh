@@ -15,6 +15,10 @@ if [ -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="1"
 fi
 
+if [ ! -f /sys/firmware/devicetree/base/model ] ; then
+export IS_RASPI="0"
+fi
+
 }
 
 
@@ -205,9 +209,11 @@ systemctl stop snmpd  && /etc/init.d/snmpd stop
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
-if [ $IS_RASPI == 1 ] ; then
+if [ $IS_RASPI = 1 ] ; then
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
-else
+fi
+
+if [ $IS_RASPI != 1 ] ; then
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
