@@ -207,12 +207,17 @@ echo "Now running $FUNCNAME...."
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf && systemctl stop netdata && systemctl start netdata
 
+pi-detect
+if [ $IS_RASPI == 1 ] ; then
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
+else
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf
+fi
+
+systemctl stop netdata && systemctl start netdata
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
-
 systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
-
 systemctl restart ntp 
 systemctl restart postfix
 
@@ -244,17 +249,7 @@ global-installPackages
 global-postPackageConfiguration
 
 
-##################################################
-# Things todo on certain types of systems
-##################################################
 
-###
-# Raspberry Pi
-###
-pi-detect
-if [ $IS_RASPI == 1 ] ; then
-  echo "Running on a Raspberry pi..."
-fi
 
 ###
 # Jetson nano
