@@ -174,7 +174,6 @@ rsync \
 net-tools \
 tshark \
 tcpdump \
-sudo \
 lynis \
 qemu-guest-agent \
 zsh \
@@ -196,7 +195,7 @@ function global-postPackageConfiguration()
 echo "Now running $FUNCNAME...."
 
 ###Post package deployment bits
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/snmpd.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf && systemctl stop netdata && systemctl start netdata
