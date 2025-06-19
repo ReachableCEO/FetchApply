@@ -156,7 +156,7 @@ export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::=
 MAIL_HOST="$(hostname -f)"
 debconf-set-selections <<< "postfix postfix/mailname string $MAIL_HOST"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
-debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.turnsys.net"
+debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
 
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 htop  \
