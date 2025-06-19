@@ -110,7 +110,7 @@ fi
 
 if [ ! -d $LOCALUSER_SSH_DIR ]; then 
   if [ ! -d /home/subodev ]; then
-  mkdir /home/localuser/.ssh/
+  mkdir -p /home/localuser/.ssh/
   curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
   chmod 400 /home/localuser/.ssh/authorized_keys
   fi
