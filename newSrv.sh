@@ -192,6 +192,7 @@ tcpdump \
 lynis \
 qemu-guest-agent \
 zsh \
+zsh-autocompletions \
 telnet \
 postfix 
 
@@ -204,6 +205,8 @@ function global-postPackageConfiguration()
 {
 
 echo "Now running $FUNCNAME...."
+
+chsh -s $(which zsh) root
 
 ###Post package deployment bits
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
