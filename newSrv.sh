@@ -157,6 +157,7 @@ MAIL_HOST="$(hostname -f)"
 debconf-set-selections <<< "postfix postfix/mailname string $MAIL_HOST"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
 debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
+postconf -e "inet_protocols = ipv4" 
 
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 htop  \
@@ -177,6 +178,7 @@ gpg  \
 molly-guard  \
 lshw  \
 sudo  \
+fonts-powerline \
 mailutils \
 clamav \
 sl \
