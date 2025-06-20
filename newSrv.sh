@@ -178,7 +178,6 @@ gpg  \
 molly-guard  \
 lshw  \
 sudo  \
-fonts-powerline \
 mailutils \
 clamav \
 sl \
@@ -193,6 +192,8 @@ lynis \
 qemu-guest-agent \
 zsh \
 zsh-autocompletions \
+zsh-syntax-highlighting \
+fonts-powerline \
 telnet \
 postfix 
 
