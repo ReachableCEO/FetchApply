@@ -197,6 +197,7 @@ screen  \
 tmux  \
 vim \
 vim-solarized \
+command-not-found \
 lldpd  \
 net-tools  \
 gpg  \
