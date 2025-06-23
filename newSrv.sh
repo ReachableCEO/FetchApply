@@ -21,6 +21,7 @@ LOCALUSER_CHECK="$(getent passwd|grep -c localuser)"
 
 function pi-detect()
 {
+echo Now running "$FUNCNAME"....
 if [ -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="1"
 fi
@@ -28,6 +29,7 @@ fi
 if [ ! -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="0"
 fi
+echo Completed running "$FUNCNAME"
 }
 
 function global-oam()
@@ -48,7 +50,7 @@ echo Completed running "$FUNCNAME"
 
 function global-systemServiceConfigurationFiles()
 {
-echo "Now running $FUNCNAME...."
+echo Now running "$FUNCNAME"....
 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
@@ -86,12 +88,12 @@ curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-key
 
 fi 
 
-echo "Completed running $FUNCNAME"
+echo Completed running "$FUNCNAME"
 }
 
 function global-installPackages()
 {
-echo "Now running $FUNCNAME...."
+echo Now running "$FUNCNAME"....
 
 # Setup webmin repo, used for RBAC/2fa PAM
 
@@ -215,13 +217,13 @@ export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::=
 # power-profiles-daemon
 fi
 
-echo "Completed running $FUNCNAME"
+echo Completed running "$FUNCNAME"
 }
 
 function global-postPackageConfiguration()
 {
 
-echo "Now running $FUNCNAME...."
+echo Now running "$FUNCNAME"
 
 apt-file update
 
@@ -244,7 +246,6 @@ chsh -s "$(which zsh)" localuser
 fi
 
 ###Post package deployment bits
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/dhclient.conf > /etc/dhcp/dhclient.conf
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
@@ -265,7 +266,15 @@ systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 
 systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
 
-systemctl restart ntp 
+if [ "$KALI_CHECK" -eq 0 ]; then
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntpsec/ntp.conf
+  systemctl restart ntp 
+fi
+
+if [ "$KALI_CHECK" -eq 1 ]; then
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
+  systemctl restart ntpsec.service
+fi
 
 systemctl enable
 systemctl stop postfix
@@ -281,7 +290,36 @@ if [ $VIRT_GUEST = 1 ]; then
   tuned-adm profile virtual-guest
 fi
 
-echo "Completed running $FUNCNAME"
+echo Completed running "$FUNCNAME"
+}
+
+function secharden-auto-upgrade()
+{
+echo Now running "$FUNCNAME...."
+
+echo Completed running "$FUNCNAME"
+}
+
+function secharden-2fa()
+{
+echo Now running "$FUNCNAME"....
+
+echo Completed running "$FUNCNAME"
+}
+
+function secharden-ssh()
+{
+echo Now running "$FUNCNAME"....
+
+echo Completed running "$FUNCNAME"
+}
+
+function secharden-scap-stig()
+{
+
+echo Now running "$FUNCNAME"....
+
+echo Completed running "$FUNCNAME"
 }
 
 ####################################################################################################
@@ -296,6 +334,6 @@ global-postPackageConfiguration
 #Coming soon...
 
 #secharden-auto-upgrade
-#secharden-1fa
+#secharden-2fa
 #secharden-ssh
 #secharden-scap-stig
