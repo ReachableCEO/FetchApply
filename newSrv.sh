@@ -51,15 +51,12 @@ function global-systemServiceConfigurationFiles()
 echo "Now running $FUNCNAME...."
 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
-
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
 export SUBODEV_SSH_DIR="/home/subodev/.ssh"
-
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
-
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 
@@ -118,22 +115,14 @@ curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.l
 
 /usr/local/bin/up2date.sh
 
-#
-#Remove stuff we don't want, add stuff we do want
-#
- 
+#Remove stuff we don't want
+
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
 
-MAIL_HOST="$(hostname -f)"
-debconf-set-selections <<< "postfix postfix/mailname string $MAIL_HOST"
-debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
-debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
-postconf -e "inet_protocols = ipv4" 
-postconf -e "inet_interfaces = 127.0.0.1"
-postconf -e "mydestination= 127.0.0.1"
-
+# add stuff we want
 
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+virt-what \
 htop  \
 dstat  \
 snmpd  \
@@ -168,7 +157,6 @@ tshark \
 tcpdump \
 lynis \
 glances \
-virt-what \
 zsh \
 zsh-autosuggestions \
 zsh-syntax-highlighting \
@@ -179,42 +167,7 @@ iotop \
 tuned \
 cockpit \
 telnet \
-ntpdate \
-ntp \
 postfix 
-
-apt-file update
-
-#Coming soon, ifdef for physical host perf setting/tuning
-# Physical host packages
-# i7z
-# thermald
-# cpupower
-
-# power-profiles-daemon
-# powerprofilesctl set performance
-#tsys1# systemctl enable power-profiles-daemon
-#tsys1# systemctl start power-profiles-daemon
-
-#Coming soon , virt guest tuning
-
-#export VIRT_TYPE
-#VIRT_TYPE="$(virt-what)"
-
-#export VIRT_GUEST
-#VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|' )"
-
-#export KVM_GUEST
-#KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' )"
-
-#if [ $VIRT_GUEST = 1 ]; then
-#  tuned-adm profile virtual-guest
-#fi
-
-#if [ $KVM_GUEST = 1 ]; then
-#  apt -y install qemu-guest-agent
-#fi
-
 
 #Coming very soon, 2fa for webmin/cockpit/ssh
 #libpam-google-authenticator
@@ -223,6 +176,45 @@ apt-file update
 #https://webmin.com/docs/modules/webmin-configuration/#two-factor-authentication
 #https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
 
+export KALI_CHECK
+KALI_CHECK="$(distro -c kali)"
+
+if [ "$KALI_CHECK" -eq 0 ]; then
+export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+  ntpdate \
+  ntp 
+fi
+
+if [ "$KALI_CHECK" -eq 1 ]; then
+export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+  ntpsec-ntpdate \
+  ntpsec
+fi
+
+export VIRT_TYPE
+VIRT_TYPE="$(virt-what)"
+
+export VIRT_GUEST
+VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' )"
+
+export KVM_GUEST
+KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' )"
+
+if [ $KVM_GUEST = 1 ]; then
+  apt -y install qemu-guest-agent
+fi
+
+export PHYSICAL_HOST
+PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell)"
+
+if [ $PHYSICAL_HOST -gt 0 ]; then
+export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+ i7z \
+ thermald \
+ cpupower
+# power-profiles-daemon
+fi
+
 echo "Completed running $FUNCNAME"
 }
 
@@ -230,6 +222,16 @@ function global-postPackageConfiguration()
 {
 
 echo "Now running $FUNCNAME...."
+
+apt-file update
+
+MAIL_HOST="$(hostname -f)"
+debconf-set-selections <<< "postfix postfix/mailname string $MAIL_HOST"
+debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
+debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
+postconf -e "inet_protocols = ipv4" 
+postconf -e "inet_interfaces = 127.0.0.1"
+postconf -e "mydestination= 127.0.0.1"
 
 chsh -s $(which zsh) root
 
@@ -269,6 +271,14 @@ systemctl restart postfix
 
 /usr/sbin/accton on
 
+# powerprofilesctl set performance
+#tsys1# systemctl enable power-profiles-daemon
+#tsys1# systemctl start power-profiles-daemon
+
+if [ $VIRT_GUEST = 1 ]; then
+  tuned-adm profile virtual-guest
+fi
+
 echo "Completed running $FUNCNAME"
 }
 
@@ -277,6 +287,13 @@ echo "Completed running $FUNCNAME"
 ####################################################################################################
 
 global-oam
-global-installPackages
 global-systemServiceConfigurationFiles
+global-installPackages
 global-postPackageConfiguration
+
+#Coming soon...
+
+#secharden-auto-upgrade
+#secharden-1fa
+#secharden-ssh
+#secharden-scap-stig
