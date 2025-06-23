@@ -8,18 +8,9 @@
 
 # Start actual script logic here...
 
-function pi-detect()
-{
-
-if [ -f /sys/firmware/devicetree/base/model ] ; then
-export IS_RASPI="1"
-fi
-
-if [ ! -f /sys/firmware/devicetree/base/model ] ; then
-export IS_RASPI="0"
-fi
-
-}
+#################
+#Global variables
+#################
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd|grep -c subodev)"
@@ -28,87 +19,47 @@ export LOCALUSER_CHECK
 LOCALUSER_CHECK="$(getent passwd|grep -c localuser)"
 
 
-function global-configureAptRepos()
-
+function pi-detect()
 {
+if [ -f /sys/firmware/devicetree/base/model ] ; then
+export IS_RASPI="1"
+fi
 
-echo "Now running $FUNCNAME...."
-
-curl https://raw.githubusercontent.com/webmin/webmin/master/webmin-setup-repo.sh > /tmp/webmin-setup.sh
-sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
-
-
-echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
-curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
-
-
-echo "Completed running $FUNCNAME"
-
+if [ ! -f /sys/firmware/devicetree/base/model ] ; then
+export IS_RASPI="0"
+fi
 }
 
-function global-shellScripts()
-
+function global-oam()
 {
-
-echo "Now running $FUNCNAME...."
+echo Now running "$FUNCNAME"....
 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
-echo "Completed running $FUNCNAME"
-
-}
-
-function global-profileScripts()
-{
-
-echo "Now running $FUNCNAME...."
-
-#curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tsys-shell.sh > /etc/profile.d/tsys-shell.sh
-#curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tmux.sh > /etc/profile.d/tmux.sh
-
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
-
-echo "Completed running $FUNCNAME"
-
-}
-
-
-function global-oam()
-
-{
-
-echo "Now running $FUNCNAME...."
-
 rm -rf /usr/local/librenms-agent
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/librenms.tar.gz > /usr/local/librenms.tar.gz
 cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
-cd -
+cd - || exit
 
-echo "Completed running $FUNCNAME"
+echo Completed running "$FUNCNAME"
 
 }
 
-
-if [[ ! -f /root/ntpserver ]]; then
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
-export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install ntp ntpdate
-systemctl stop ntp && ntpdate pool.ntp.org && systemctl start ntp
-fi
-
 function global-systemServiceConfigurationFiles()
-
 {
-
 echo "Now running $FUNCNAME...."
 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
 export SUBODEV_SSH_DIR="/home/subodev/.ssh"
+
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
+
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 
@@ -118,9 +69,6 @@ if [ ! -d $ROOT_SSH_DIR ]; then
 fi 
 
 if [ "$LOCALUSER_CHECK" = 1 ]; then
-
-chsh -s "$(which zsh)" localuser
-
   if [ ! -d $LOCALUSER_SSH_DIR ]; then 
      mkdir -p /home/localuser/.ssh/
   fi
@@ -128,13 +76,9 @@ chsh -s "$(which zsh)" localuser
   curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
-
 fi
 
 if [ "$SUBODEV_CHECK" = 1 ]; then
-
-chsh -s "$(which zsh)" subodev
-
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
   mkdir /home/subodev/.ssh/ 
 fi
@@ -146,20 +90,21 @@ curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-key
 fi 
 
 echo "Completed running $FUNCNAME"
-
 }
 
 function global-installPackages()
-
 {
-
 echo "Now running $FUNCNAME...."
 
-#
-#Ensure system time is correct, otherwise can't install packages...
-#
+# Setup webmin repo, used for RBAC/2fa PAM
 
+curl https://raw.githubusercontent.com/webmin/webmin/master/webmin-setup-repo.sh > /tmp/webmin-setup.sh
+sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
 
+# Setup lynis repo, used for sec ops/compliance
+
+echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
+curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
 
 #
 #Patch the system
@@ -227,7 +172,11 @@ iotop \
 tuned \
 cockpit \
 telnet \
+ntpdate \
+ntp \
 postfix 
+
+apt-file update
 
 #Coming soon, ifdef for physical host perf setting/tuning
 # Physical host packages
@@ -268,18 +217,26 @@ postfix
 #https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
 
 echo "Completed running $FUNCNAME"
-
 }
 
 function global-postPackageConfiguration()
-
 {
 
 echo "Now running $FUNCNAME...."
 
 chsh -s $(which zsh) root
 
+if [ "$LOCALUSER_CHECK" = 1 ]; then
+chsh -s "$(which zsh)" localuser
+fi
+
+if [ "$SUBODEV_CHECK" = 1 ]; then
+chsh -s "$(which zsh)" localuser
+fi
+
 ###Post package deployment bits
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
+
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
@@ -301,33 +258,13 @@ systemctl restart postfix
 /usr/sbin/accton on
 
 echo "Completed running $FUNCNAME"
-
 }
 
-##################################################
-# Things todo on all TSYS systems
-##################################################
-
 ####################################################################################################
-#Download configs and support bits to onfigure things in the TSYS standard model
+# RUn the various functions in the correct order
 ####################################################################################################
 
-global-configureAptRepos
-global-shellScripts
-global-profileScripts
 global-oam
-global-systemServiceConfigurationFiles
-
-
-####################################################################################################
-#Install packages and preserve existing configs...
-####################################################################################################
 global-installPackages
+global-systemServiceConfigurationFiles
 global-postPackageConfiguration
-
-
-
-
-###
-# Jetson nano
-###
