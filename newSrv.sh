@@ -211,6 +211,7 @@ net-tools \
 tshark \
 tcpdump \
 lynis \
+glances \
 qemu-guest-agent \
 zsh \
 zsh-autosuggestions \
