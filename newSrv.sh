@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 # Standard strict mode and error handling boilderplate...
 
-set -eEu 
-set -o pipefail
-set -o functrace
+#set -e 
+#set -o pipefail
+#set -o functrace
 
 # Start actual script logic here...
 
@@ -20,6 +20,12 @@ export IS_RASPI="0"
 fi
 
 }
+
+export SUBODEV_CHECK
+SUBODEV_CHECK="$(getent passwd|grep -c subodev)"
+
+export LOCALUSER_CHECK
+LOCALUSER_CHECK="$(getent passwd|grep -c localuser)"
 
 
 function global-configureAptRepos()
@@ -58,8 +64,10 @@ function global-profileScripts()
 
 echo "Now running $FUNCNAME...."
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tsys-shell.sh > /etc/profile.d/tsys-shell.sh
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tmux.sh > /etc/profile.d/tmux.sh
+#curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tsys-shell.sh > /etc/profile.d/tsys-shell.sh
+#curl --silent https://dl.knownelement.com/FetchApplyDistPoint/profiled-tmux.sh > /etc/profile.d/tmux.sh
+
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
 
 echo "Completed running $FUNCNAME"
 
@@ -109,24 +117,33 @@ if [ ! -d $ROOT_SSH_DIR ]; then
   && chown root: /root/.ssh/authorized_keys
 fi 
 
-if [ ! -d $LOCALUSER_SSH_DIR ]; then 
-  if [ ! -d /home/subodev ]; then
-  mkdir -p /home/localuser/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
-  && chmod 400 /home/localuser/.ssh/authorized_keys \
-  && chown localuser: /home/localuser/.ssh/authorized_keys 
+if [ "$LOCALUSER_CHECK" = 1 ]; then
+
+chsh -s "$(which zsh)" localuser
+
+  if [ ! -d $LOCALUSER_SSH_DIR ]; then 
+     mkdir -p /home/localuser/.ssh/
   fi
-fi 
+
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+  && chown localuser /home/localuser/.ssh/authorized_keys \
+  && chmod 400 /home/localuser/.ssh/authorized_keys
+
+fi
+
+if [ "$SUBODEV_CHECK" = 1 ]; then
+
+chsh -s "$(which zsh)" subodev
 
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
-  if [ ! -d /home/subodev ]; then
   mkdir /home/subodev/.ssh/ 
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
-  && chmod 400 /home/subodev/.ssh/authorized_keys \
-  && chown subodev: /home/subodev/.ssh/authorized_keys
-  fi
-fi 
+fi
 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+&& chmod 400 /home/subodev/.ssh/authorized_keys \
+&& chown subodev: /home/subodev/.ssh/authorized_keys
+
+fi 
 
 echo "Completed running $FUNCNAME"
 
