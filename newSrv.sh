@@ -103,24 +103,27 @@ export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
 export SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
-  mkdir /root/.ssh/
-  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /root/.ssh/authorized_keys && chmod 400 /root/.ssh/authorized_keys
-  chmod 400 /root/.ssh/authorized_keys
+  mkdir /root/.ssh/ 
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /root/.ssh/authorized_keys \
+  && chmod 400 /root/.ssh/authorized_keys \
+  && chown root: /root/.ssh/authorized_keys
 fi 
 
 if [ ! -d $LOCALUSER_SSH_DIR ]; then 
   if [ ! -d /home/subodev ]; then
   mkdir -p /home/localuser/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys && chmod 400 /home/localuser/.ssh/authorized_keys
-  chmod 400 /home/localuser/.ssh/authorized_keys
+  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+  && chmod 400 /home/localuser/.ssh/authorized_keys \
+  && chown localuser: /home/localuser/.ssh/authorized_keys 
   fi
 fi 
 
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
-  if [ ! -d /home/localuser ]; then
-  mkdir /home/subodev/.ssh/
-  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys && chmod 400 /home/subodev/.ssh/authorized_keys
-  chmod 400 /home/subodev/.ssh/authorized_keys
+  if [ ! -d /home/subodev ]; then
+  mkdir /home/subodev/.ssh/ 
+  curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+  && chmod 400 /home/subodev/.ssh/authorized_keys \
+  && chown subodev: /home/subodev/.ssh/authorized_keys
   fi
 fi 
 
@@ -193,7 +196,7 @@ tcpdump \
 lynis \
 qemu-guest-agent \
 zsh \
-zsh-autocompletions \
+zsh-autosuggestions \
 zsh-syntax-highlighting \
 fonts-powerline \
 webmin \
