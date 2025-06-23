@@ -177,7 +177,7 @@ postfix
 #https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
 
 export KALI_CHECK
-KALI_CHECK="$(distro -c kali)"
+KALI_CHECK="$(distro |grep -c kali)"
 
 if [ "$KALI_CHECK" -eq 0 ]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
@@ -267,7 +267,9 @@ systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostna
 
 systemctl restart ntp 
 
-systemctl restart postfix
+systemctl enable
+systemctl stop postfix
+systemctl start postfix
 
 /usr/sbin/accton on
 
