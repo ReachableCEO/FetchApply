@@ -91,7 +91,7 @@ echo "Completed running $FUNCNAME"
 
 
 if [[ ! -f /root/ntpserver ]]; then
-curl --silent http://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install ntp ntpdate
 systemctl stop ntp && ntpdate pool.ntp.org && systemctl start ntp
 fi
@@ -194,6 +194,8 @@ ngrep \
 lsb-release  \
 screen  \
 tmux  \
+vim \
+vim-solarized \
 lldpd  \
 net-tools  \
 gpg  \
@@ -212,16 +214,38 @@ tshark \
 tcpdump \
 lynis \
 glances \
-qemu-guest-agent \
+virt-what \
 zsh \
 zsh-autosuggestions \
 zsh-syntax-highlighting \
 fonts-powerline \
 webmin \
 usermin \
+iotop \
+tuned \
 cockpit \
 telnet \
 postfix 
+
+#Coming soon , virt guest tuning
+
+#export VIRT_TYPE
+#VIRT_TYPE="$(virt-what)"
+
+#export VIRT_GUEST
+#VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|' )"
+
+#export KVM_GUEST
+#KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' )"
+
+#if [ $VIRT_GUEST = 1 ]; then
+#  tuned-adm profile virtual-guest
+#fi
+
+#if [ $KVM_GUEST = 1 ]; then
+#  apt -y install qemu-guest-agent
+#fi
+
 
 #Coming very soon, 2fa for webmin/cockpit/ssh
 #libpam-google-authenticator
