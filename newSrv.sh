@@ -245,8 +245,9 @@ fi
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/dhclient.conf > /etc/dhcp/dhclient.conf
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 systemctl stop snmpd  && /etc/init.d/snmpd stop
+
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
@@ -259,8 +260,11 @@ curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/
 fi
 
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
+
 systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
+
 systemctl restart ntp 
+
 systemctl restart postfix
 
 /usr/sbin/accton on
