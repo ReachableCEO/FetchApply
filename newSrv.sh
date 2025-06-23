@@ -179,6 +179,7 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet wit
 debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
 postconf -e "inet_protocols = ipv4" 
 postconf -e "inet_interfaces = 127.0.0.1"
+postconf -e "mydestination= 127.0.0.1"
 
 
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
@@ -226,6 +227,17 @@ tuned \
 cockpit \
 telnet \
 postfix 
+
+#Coming soon, ifdef for physical host perf setting/tuning
+# Physical host packages
+# i7z
+# thermald
+# cpupower
+
+# power-profiles-daemon
+# powerprofilesctl set performance
+#tsys1# systemctl enable power-profiles-daemon
+#tsys1# systemctl start power-profiles-daemon
 
 #Coming soon , virt guest tuning
 
