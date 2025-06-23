@@ -106,6 +106,12 @@ sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
 echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
 curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
 
+# Setup tailscale
+
+curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+
+
 #
 #Patch the system
 #
@@ -139,6 +145,7 @@ sysstat \
 ngrep \
 lsb-release  \
 screen  \
+tailscale \
 tmux  \
 vim \
 vim-solarized \
