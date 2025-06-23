@@ -243,6 +243,7 @@ fi
 
 ###Post package deployment bits
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/dhclient.conf > /etc/dhcp/dhclient.conf
 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 systemctl stop snmpd  && /etc/init.d/snmpd stop
