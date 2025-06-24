@@ -55,6 +55,8 @@ echo Now running "$FUNCNAME"....
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-sshd-config > /etc/ssh/sshd_config
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -144,6 +146,7 @@ lldpd  \
 net-tools  \
 gpg  \
 molly-guard  \
+fail2ban \
 lshw  \
 sudo  \
 mailutils \
@@ -167,6 +170,9 @@ usermin \
 iotop \
 tuned \
 cockpit \
+iptables \
+netfilter-persistent \
+iptables-persistent \
 telnet \
 postfix 
 
@@ -316,6 +322,14 @@ echo Completed running "$FUNCNAME"
 function secharden-ssh()
 {
 echo Now running "$FUNCNAME"....
+
+iptables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
+iptables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 10 --hitcount 10 -j DROP
+ip6tables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
+ip6tables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 10 --hitcount 10 -j DROP
+
+service netfilter-persistent save
+
 
 echo Completed running "$FUNCNAME"
 }
