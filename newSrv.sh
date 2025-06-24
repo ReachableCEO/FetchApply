@@ -357,3 +357,5 @@ global-postPackageConfiguration
 #secharden-2fa
 #secharden-ssh
 #secharden-scap-stig
+
+#auth-cloudron-ldap
