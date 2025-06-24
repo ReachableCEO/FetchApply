@@ -200,9 +200,9 @@ export VIRT_GUEST
 VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' )"
 
 export KVM_GUEST
-KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' )"
+KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm')"
 
-if [ $KVM_GUEST = 1 ]; then
+if [ $KVM_GUEST -eq 1 ]; then
   apt -y install qemu-guest-agent
 fi
 
@@ -246,6 +246,7 @@ chsh -s "$(which zsh)" localuser
 fi
 
 ###Post package deployment bits
+
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/dhclient.conf > /etc/dhcp/dhclient.conf
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
@@ -254,6 +255,7 @@ curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
+
 if [ $IS_RASPI = 1 ] ; then
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
@@ -264,7 +266,9 @@ fi
 
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 
-systemctl stop rsyslog && systemctl start rsyslog && logger "hi hi from $(hostname)"
+systemctl stop rsyslog 
+systemctl start rsyslog
+logger "hi hi from $(hostname)"
 
 if [ "$KALI_CHECK" -eq 0 ]; then
   curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntpsec/ntp.conf
@@ -286,7 +290,7 @@ systemctl start postfix
 #tsys1# systemctl enable power-profiles-daemon
 #tsys1# systemctl start power-profiles-daemon
 
-if [ $VIRT_GUEST = 1 ]; then
+if [ "$VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
 fi
 
