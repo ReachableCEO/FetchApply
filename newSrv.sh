@@ -91,6 +91,8 @@ curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-key
 
 fi 
 
+newaliases
+
 echo Completed running "$FUNCNAME"
 }
 
