@@ -185,13 +185,13 @@ telnet
 export KALI_CHECK
 KALI_CHECK="$(distro |grep -c kali)"
 
-if [ "$KALI_CHECK" -eq 0 ]; then
+if [ "$KALI_CHECK" = 0 ]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpdate \
   ntp 
 fi
 
-if [ "$KALI_CHECK" -eq 1 ]; then
+if [ "$KALI_CHECK" = 1 ]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpsec-ntpdate \
   ntpsec
@@ -206,7 +206,7 @@ VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' )"
 export KVM_GUEST
 KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm')"
 
-if [[ $KVM_GUEST -eq 1 ]]; then
+if [[ $KVM_GUEST = 1 ]]; then
   apt -y install qemu-guest-agent
 fi
 
@@ -246,12 +246,8 @@ postconf -e "smtp_generic_maps = hash:/etc/postfix/generic"
 
 systemctl restart postfix
 
-#This should always work
-echo "hi from root to coo@turnsys.com" | mail -s "hi to root(coo@turnsys.com) from $(hostname)" coo@turnsys.com
-
-#This is in dev and may fail
-echo "hi from root to just root" | mail -s "hi directly to root from $(hostname)" root
-
+#This is under test/dev and may fail
+echo "hi from root to root" | mail -s "hi directly to root from $(hostname)" root
 
 chsh -s $(which zsh) root
 
