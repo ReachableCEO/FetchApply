@@ -143,6 +143,7 @@ vim \
 command-not-found \
 lldpd  \
 net-tools  \
+dos2unix \
 gpg  \
 molly-guard  \
 fail2ban \
