@@ -140,7 +140,6 @@ screen  \
 tailscale \
 tmux  \
 vim \
-vim-solarized \
 command-not-found \
 lldpd  \
 net-tools  \
@@ -176,12 +175,6 @@ iptables-persistent \
 telnet \
 postfix 
 
-#Coming very soon, 2fa for webmin/cockpit/ssh
-#libpam-google-authenticator
-
-#https://www.ogselfhosting.com/index.php/2024/03/21/enabling-2fa-for-cockpit/
-#https://webmin.com/docs/modules/webmin-configuration/#two-factor-authentication
-#https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
 
 export KALI_CHECK
 KALI_CHECK="$(distro |grep -c kali)"
@@ -350,12 +343,20 @@ global-oam
 global-systemServiceConfigurationFiles
 global-installPackages
 global-postPackageConfiguration
+secharden-ssh
 
 #Coming soon...
 
 #secharden-auto-upgrade
+
 #secharden-2fa
-#secharden-ssh
+#Coming very soon, 2fa for webmin/cockpit/ssh
+#libpam-google-authenticator
+
+#https://www.ogselfhosting.com/index.php/2024/03/21/enabling-2fa-for-cockpit/
+#https://webmin.com/docs/modules/webmin-configuration/#two-factor-authentication
+#https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
+
 #secharden-scap-stig
 
 #auth-cloudron-ldap
