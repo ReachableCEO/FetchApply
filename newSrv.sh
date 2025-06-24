@@ -227,13 +227,13 @@ apt-file update
 
 
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/postfix_canonicalf > /etc/postfix/canonical
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/postfix_canonical > /etc/postfix/canonical
 postmap /etc/postfix/canonical
 
 MAIL_HOST="$(hostname -f)"
 debconf-set-selections <<< "postfix postfix/mailname string $MAIL_HOST"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
-debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.taile3044.ts.net"
+debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.knel.net"
 postconf -e "inet_protocols = ipv4" 
 postconf -e "inet_interfaces = 127.0.0.1"
 postconf -e "mydestination= 127.0.0.1"
