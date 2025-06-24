@@ -52,6 +52,7 @@ function global-systemServiceConfigurationFiles()
 {
 echo Now running "$FUNCNAME"....
 
+
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
 curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
@@ -96,6 +97,7 @@ echo Completed running "$FUNCNAME"
 function global-installPackages()
 {
 echo Now running "$FUNCNAME"....
+
 
 # Setup webmin repo, used for RBAC/2fa PAM
 
@@ -173,8 +175,9 @@ cockpit \
 iptables \
 netfilter-persistent \
 iptables-persistent \
-telnet \
-postfix 
+postfix \
+telnet 
+
 
 
 export KALI_CHECK
@@ -226,18 +229,26 @@ echo Now running "$FUNCNAME"
 
 apt-file update
 
+systemctl stop postfix
 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/postfix_generic> /etc/postfix/generic
+dos2unix /etc/postfix/generic
+postmap /etc/postfix/generic
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/postfix_canonical > /etc/postfix/canonical
-dos2unux /etc/postfix/canonical
-postmap /etc/postfix/canonical
-
-debconf-set-selections <<< "postfix postfix/main_mailer_type string Internet with smarthost"
-debconf-set-selections <<< "postfix postfix/relayhost string pfv-netboot.knel.net"
 postconf -e "inet_protocols = ipv4" 
 postconf -e "inet_interfaces = 127.0.0.1"
 postconf -e "mydestination= 127.0.0.1"
-postconf -e "canonical_maps = hash:/etc/postfix/canonical"
+postconf -e "relayhost = tsys-cloudron.knel.net"
+postconf -e "smtp_generic_maps = hash:/etc/postfix/generic"
+# smtp_generic_maps = hash:/etc/postfix/generic
+
+systemctl restart postfix
+
+#This should always work
+echo "hi from root to coo@turnsys.com" | mail -s "hi to root(coo@turnsys.com) from $(hostname)" coo@turnsys.com
+
+#This is in dev and may fail
+echo "hi from root to just root" | mail -s "hi directly to root from $(hostname)" root
 
 
 chsh -s $(which zsh) root
