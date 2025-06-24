@@ -206,14 +206,14 @@ VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' )"
 export KVM_GUEST
 KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm')"
 
-if [ $KVM_GUEST -eq 1 ]; then
+if [[ $KVM_GUEST -eq 1 ]]; then
   apt -y install qemu-guest-agent
 fi
 
 export PHYSICAL_HOST
 PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell)"
 
-if [ $PHYSICAL_HOST -gt 0 ]; then
+if [[ $PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
  i7z \
  thermald \
@@ -365,7 +365,9 @@ global-installPackages
 global-postPackageConfiguration
 secharden-ssh
 
+#######################################
 #Coming soon...
+#######################################
 
 #secharden-auto-upgrade
 
