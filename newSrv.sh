@@ -110,7 +110,6 @@ curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-pub
 curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
 curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
 
-
 #
 #Patch the system
 #
@@ -286,9 +285,12 @@ systemctl start postfix
 
 /usr/sbin/accton on
 
+#if [ $PHYSICAL_HOST -gt 0 ]; then
+# power-profiles-daemon
 # powerprofilesctl set performance
 #tsys1# systemctl enable power-profiles-daemon
 #tsys1# systemctl start power-profiles-daemon
+#fi
 
 if [ "$VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
