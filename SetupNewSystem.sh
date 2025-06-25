@@ -18,6 +18,9 @@ SUBODEV_CHECK="$(getent passwd|grep -c subodev)"
 export LOCALUSER_CHECK
 LOCALUSER_CHECK="$(getent passwd|grep -c localuser)"
 
+export DL_ROOT
+DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
+
 
 function pi-detect()
 {
@@ -36,11 +39,11 @@ function global-oam()
 {
 echo Now running "$FUNCNAME"....
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
+curl --silent ${DL_ROOT}/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
+curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
 rm -rf /usr/local/librenms-agent
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/Agents/librenms.tar.gz > /usr/local/librenms.tar.gz
+curl --silent ${DL_ROOT}/Agents/librenms.tar.gz > /usr/local/librenms.tar.gz
 cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
 cd - || exit
 
@@ -53,11 +56,11 @@ function global-systemServiceConfigurationFiles()
 echo Now running "$FUNCNAME"....
 
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SMTP/aliases > /etc/aliases 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+curl --silent ${DL_ROOT}/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
+curl --silent ${DL_ROOT}/ConfigFiles/SMTP/aliases > /etc/aliases 
+curl --silent ${DL_ROOT}/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
+curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
+curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -67,7 +70,7 @@ if [ ! -d $ROOT_SSH_DIR ]; then
   mkdir /root/.ssh/ 
 fi 
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
+curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
 chmod 400 /root/.ssh/authorized_keys 
 chown root: /root/.ssh/authorized_keys
 
@@ -77,7 +80,7 @@ if [ "$LOCALUSER_CHECK" = 1 ]; then
      mkdir -p /home/localuser/.ssh/
   fi
 
-  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+ ulimit curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -87,7 +90,7 @@ if [ ! -d $SUBODEV_SSH_DIR ]; then
   mkdir /home/subodev/.ssh/ 
 fi
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
 
@@ -235,7 +238,7 @@ apt-file update
 
 systemctl stop postfix
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
+curl --silent ${DL_ROOT}/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
 dos2unix /etc/postfix/generic
 postmap /etc/postfix/generic
 
@@ -263,21 +266,21 @@ fi
 
 ###Post package deployment bits
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.conf
+curl --silent ${DL_ROOT}/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.conf
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SNMP/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
+curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
 
 if [ $IS_RASPI = 1 ] ; then
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
+curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
 if [ $IS_RASPI != 1 ] ; then
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
+curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
@@ -287,12 +290,12 @@ systemctl start rsyslog
 logger "hi hi from $(hostname)"
 
 if [ "$KALI_CHECK" -eq 0 ]; then
-  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
+  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntp 
 fi
 
 if [ "$KALI_CHECK" -eq 1 ]; then
-  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
+  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
   systemctl restart ntpsec.service
 fi
 
@@ -316,43 +319,6 @@ fi
 echo Completed running "$FUNCNAME"
 }
 
-function secharden-auto-upgrade()
-{
-echo Now running "$FUNCNAME...."
-
-echo Completed running "$FUNCNAME"
-}
-
-function secharden-2fa()
-{
-echo Now running "$FUNCNAME"....
-
-echo Completed running "$FUNCNAME"
-}
-
-function secharden-ssh()
-{
-echo Now running "$FUNCNAME"....
-
-iptables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
-iptables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 10 --hitcount 10 -j DROP
-ip6tables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
-ip6tables -I INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 10 --hitcount 10 -j DROP
-
-service netfilter-persistent save
-
-
-echo Completed running "$FUNCNAME"
-}
-
-function secharden-scap-stig()
-{
-
-echo Now running "$FUNCNAME"....
-
-echo Completed running "$FUNCNAME"
-}
-
 ####################################################################################################
 # RUn the various functions in the correct order
 ####################################################################################################
@@ -361,22 +327,30 @@ global-oam
 global-systemServiceConfigurationFiles
 global-installPackages
 global-postPackageConfiguration
-secharden-ssh
 
-#######################################
-#Coming soon...
-#######################################
 
-#secharden-auto-upgrade
+####################################################################################################
+# Run various modules
+####################################################################################################
 
-#secharden-2fa
-#Coming very soon, 2fa for webmin/cockpit/ssh
-#libpam-google-authenticator
+####################################################################################################
+# Security Hardening
+####################################################################################################
 
-#https://www.ogselfhosting.com/index.php/2024/03/21/enabling-2fa-for-cockpit/
-#https://webmin.com/docs/modules/webmin-configuration/#two-factor-authentication
-#https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-18-04
+# SSH
+curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(whcih bash)
 
-#secharden-scap-stig
+# Auto Upgrades
 
-#auth-cloudron-ldap
+# 2fa
+
+# Audit agents
+
+# SCAP/STIG/Compliance As Code
+
+
+####################################################################################################
+# Authentication
+####################################################################################################
+
+# Cloudron ldap
