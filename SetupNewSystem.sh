@@ -435,8 +435,8 @@ echo Completed running "$FUNCNAME"
 
 PreflightCheck
 global-oam
-global-systemServiceConfigurationFiles
 global-installPackages
+global-systemServiceConfigurationFiles
 global-postPackageConfiguration
 
 secharden-ssh
