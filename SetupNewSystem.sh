@@ -13,13 +13,59 @@ set -o functrace
 #################
 
 export SUBODEV_CHECK
-SUBODEV_CHECK="$(getent passwd|grep -c subodev)"
+SUBODEV_CHECK="$(getent passwd|grep -c subodev || true)"
 
 export LOCALUSER_CHECK
-LOCALUSER_CHECK="$(getent passwd|grep -c localuser)"
+LOCALUSER_CHECK="$(getent passwd|grep -c localuser || true)"
 
 export DL_ROOT
 DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
+
+
+#######################
+# Support functions
+#######################
+
+function error_out()
+{
+        echo "Bailing out. See above for reason...."
+        exit 1
+}
+
+function handle_failure() {
+  local lineno=$1
+  local fn=$2
+  local exitstatus=$3
+  local msg=$4
+  local lineno_fns=${0% 0}
+  if [[ "$lineno_fns" != "-1" ]] ; then
+    lineno="${lineno} ${lineno_fns}"
+  fi
+  echo "${BASH_SOURCE[0]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
+}
+
+trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
+
+function PreflightCheck()
+{
+
+
+export curr_user="$USER"
+export user_check
+
+user_check="$(echo "$curr_user" | grep -c root)"
+
+
+if [ $user_check -ne 1 ]; then
+    echo "Must run as root."
+    error_out
+fi
+
+#Your additional stuff here...
+
+echo "All checks passed...."
+
+}
 
 
 function pi-detect()
@@ -319,14 +365,6 @@ fi
 echo Completed running "$FUNCNAME"
 }
 
-####################################################################################################
-# RUn the various functions in the correct order
-####################################################################################################
-
-global-oam
-global-systemServiceConfigurationFiles
-global-installPackages
-global-postPackageConfiguration
 
 
 ####################################################################################################
@@ -338,7 +376,14 @@ global-postPackageConfiguration
 ####################################################################################################
 
 # SSH
-curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(whcih bash)
+
+function secharden-ssh()
+{
+
+curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
+
+}
+
 
 # Auto Upgrades
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-auto-upgrades.sh|$(whcih bash)
@@ -359,3 +404,15 @@ curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(whcih bash)
 
 # Cloudron ldap
 #curl --silent ${DL_ROOT}/Modules/Security/auth-cloudron-ldap.sh|$(whcih bash)
+
+####################################################################################################
+# RUn the various functions in the correct order
+####################################################################################################
+
+PreflightCheck
+global-oam
+global-systemServiceConfigurationFiles
+global-installPackages
+global-postPackageConfiguration
+
+secharden-ssh
