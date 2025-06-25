@@ -88,10 +88,11 @@ echo Now running "$FUNCNAME"....
 curl --silent ${DL_ROOT}/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
 curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
-rm -rf /usr/local/librenms-agent
+echo "Setting up librenms agent..."
+
+rm -rf /usr/local/librenms-agent || true
 curl --silent ${DL_ROOT}/Agents/librenms.tar.gz > /usr/local/librenms.tar.gz
 cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
-cd - || exit
 
 echo Completed running "$FUNCNAME"
 
@@ -126,7 +127,7 @@ if [ "$LOCALUSER_CHECK" = 1 ]; then
      mkdir -p /home/localuser/.ssh/
   fi
 
- ulimit curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+ curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -179,7 +180,9 @@ curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.l
 
 # add stuff we want
 
-export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+echo "Now installing all the packages..."
+
+DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 virt-what \
 htop  \
 dstat  \
@@ -231,19 +234,24 @@ iptables-persistent \
 postfix \
 telnet 
 
+echo "Main packages installed."
 
+echo "Checking to see if we are on a kali system..."
 
 export KALI_CHECK
-KALI_CHECK="$(distro |grep -c kali)"
+KALI_CHECK="$(distro |grep -c kali ||true)"
 
 if [ "$KALI_CHECK" = 0 ]; then
-export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+
+  echo "We are not on a kali system, installing regular NTP packages..."
+export DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpdate \
-  ntp 
+  ntp
 fi
 
 if [ "$KALI_CHECK" = 1 ]; then
-export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+  echo "We are on a kali system, installing Kali NTP packages..."
+export DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpsec-ntpdate \
   ntpsec
 fi
@@ -252,17 +260,17 @@ export VIRT_TYPE
 VIRT_TYPE="$(virt-what)"
 
 export VIRT_GUEST
-VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' )"
+VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' ||true )"
 
 export KVM_GUEST
-KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm')"
+KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' || true)"
 
 if [[ $KVM_GUEST = 1 ]]; then
   apt -y install qemu-guest-agent
 fi
 
 export PHYSICAL_HOST
-PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell)"
+PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell ||true)"
 
 if [[ $PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
