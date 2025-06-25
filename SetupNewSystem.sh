@@ -353,12 +353,18 @@ systemctl start postfix
 
 /usr/sbin/accton on
 
-#if [ $PHYSICAL_HOST -gt 0 ]; then
+
+if [ $PHYSICAL_HOST -gt 0 ]; then
+cpufreq-set -r -g performance
+cpupower frequency-set --governor performance
+
+# Potentially merge the below if needed.
 # power-profiles-daemon
 # powerprofilesctl set performance
 #tsys1# systemctl enable power-profiles-daemon
 #tsys1# systemctl start power-profiles-daemon
-#fi
+
+fi
 
 if [ "$VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
@@ -388,6 +394,13 @@ curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
 echo Completed running "$FUNCNAME"
 }
 
+function secharden-wazuh()
+{
+echo Now running "$FUNCNAME"
+curl --silent ${DL_ROOT}/Modules/Security/secharden-wazuh.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
+
 function secharden-auto-upgrades()
 {
 echo Now running "$FUNCNAME"
@@ -409,12 +422,6 @@ echo Now running "$FUNCNAME"
 echo Completed running "$FUNCNAME"
 }
 
-function secharden-ossec()
-{
-echo Now running "$FUNCNAME"
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
-echo Completed running "$FUNCNAME"
-}
 
 function secharden-scap-stig()
 {
@@ -447,9 +454,9 @@ global-systemServiceConfigurationFiles
 global-postPackageConfiguration
 
 secharden-ssh
+secharden-wazuh
 #secharden-2fa
 #secharden-auto-upgrades
 #secharden-audit-agents
-#secharden-ossec
 #secharden-scap-stig
 #auth-cloudron-ldap
