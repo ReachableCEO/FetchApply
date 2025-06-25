@@ -36,11 +36,11 @@ function global-oam()
 {
 echo Now running "$FUNCNAME"....
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
 rm -rf /usr/local/librenms-agent
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/librenms.tar.gz > /usr/local/librenms.tar.gz
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/Agents/librenms.tar.gz > /usr/local/librenms.tar.gz
 cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
 cd - || exit
 
@@ -53,11 +53,11 @@ function global-systemServiceConfigurationFiles()
 echo Now running "$FUNCNAME"....
 
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-zshrc > /etc/zshrc
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/aliases > /etc/aliases 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/rsyslog.conf > /etc/rsyslog.conf
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SMTP/aliases > /etc/aliases 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SSH/tsys-sshd-config > /etc/ssh/sshd_config
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SSH/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -65,7 +65,7 @@ export SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 
-  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /root/.ssh/authorized_keys \
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SSH/root-ssh-authorized-keys > /root/.ssh/authorized_keys \
   && chmod 400 /root/.ssh/authorized_keys \
   && chown root: /root/.ssh/authorized_keys
 fi 
@@ -75,7 +75,7 @@ if [ "$LOCALUSER_CHECK" = 1 ]; then
      mkdir -p /home/localuser/.ssh/
   fi
 
-  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SSH/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -85,7 +85,7 @@ if [ ! -d $SUBODEV_SSH_DIR ]; then
   mkdir /home/subodev/.ssh/ 
 fi
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SSH/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
 
@@ -233,7 +233,7 @@ apt-file update
 
 systemctl stop postfix
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/postfix_generic> /etc/postfix/generic
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
 dos2unix /etc/postfix/generic
 postmap /etc/postfix/generic
 
@@ -261,21 +261,21 @@ fi
 
 ###Post package deployment bits
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/dhclient.conf > /etc/dhcp/dhclient.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.conf
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SNMP/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
 
 if [ $IS_RASPI = 1 ] ; then
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
 if [ $IS_RASPI != 1 ] ; then
-curl --silent https://dl.knownelement.com/FetchApplyDistPoint/snmpd.conf > /etc/snmp/snmpd.conf
+curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
@@ -285,12 +285,12 @@ systemctl start rsyslog
 logger "hi hi from $(hostname)"
 
 if [ "$KALI_CHECK" -eq 0 ]; then
-  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntpsec/ntp.conf
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntp 
 fi
 
 if [ "$KALI_CHECK" -eq 1 ]; then
-  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ntp.conf > /etc/ntp.conf
+  curl --silent https://dl.knownelement.com/FetchApplyDistPoint/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
   systemctl restart ntpsec.service
 fi
 
