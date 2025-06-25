@@ -381,31 +381,53 @@ echo Completed running "$FUNCNAME"
 
 function secharden-ssh()
 {
+echo Now running "$FUNCNAME"
 
 curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
 
+echo Completed running "$FUNCNAME"
 }
 
+function secharden-auto-upgrades()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
 
-# Auto Upgrades
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-auto-upgrades.sh|$(whcih bash)
+function secharden-2fa()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
 
-# 2fa
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(whcih bash)
+function secharden-audit-agents()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
 
-# Audit agents
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(whcih bash)
-
-# SCAP/STIG/Compliance As Code
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(whcih bash)
+function secharden-scap-stig()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
 
 
 ####################################################################################################
 # Authentication
 ####################################################################################################
 
-# Cloudron ldap
-#curl --silent ${DL_ROOT}/Modules/Security/auth-cloudron-ldap.sh|$(whcih bash)
+function auth-cloudron-ldap()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Auth/auth-cloudron-ldap.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
+
 
 ####################################################################################################
 # RUn the various functions in the correct order
@@ -418,3 +440,8 @@ global-installPackages
 global-postPackageConfiguration
 
 secharden-ssh
+#secharden-2fa
+#secharden-auto-upgrades
+#secharden-audit-agents
+#secharden-scap-stig
+#auth-cloudron-ldap
