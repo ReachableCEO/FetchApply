@@ -2,9 +2,9 @@
 
 # Standard strict mode and error handling boilderplate...
 
-#set -e 
-#set -o pipefail
-#set -o functrace
+set -e 
+set -o pipefail
+set -o functrace
 
 # Start actual script logic here...
 
