@@ -56,8 +56,8 @@ echo Now running "$FUNCNAME"....
 curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
 curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SMTP/aliases > /etc/aliases 
 curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
+curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -65,17 +65,18 @@ export SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 
-  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/root-ssh-authorized-keys > /root/.ssh/authorized_keys \
   && chmod 400 /root/.ssh/authorized_keys \
   && chown root: /root/.ssh/authorized_keys
 fi 
+
+curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys \
 
 if [ "$LOCALUSER_CHECK" = 1 ]; then
   if [ ! -d $LOCALUSER_SSH_DIR ]; then 
      mkdir -p /home/localuser/.ssh/
   fi
 
-  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+  curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -85,7 +86,7 @@ if [ ! -d $SUBODEV_SSH_DIR ]; then
   mkdir /home/subodev/.ssh/ 
 fi
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
 
