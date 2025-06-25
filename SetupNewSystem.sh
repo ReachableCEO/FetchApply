@@ -65,11 +65,12 @@ export SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 
-  && chmod 400 /root/.ssh/authorized_keys \
-  && chown root: /root/.ssh/authorized_keys
 fi 
 
-curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys \
+curl --silent https://dl.knownelement.com/KNEL/FetchApply/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
+chmod 400 /root/.ssh/authorized_keys 
+chown root: /root/.ssh/authorized_keys
+
 
 if [ "$LOCALUSER_CHECK" = 1 ]; then
   if [ ! -d $LOCALUSER_SSH_DIR ]; then 
