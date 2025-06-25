@@ -234,24 +234,18 @@ iptables-persistent \
 postfix \
 telnet 
 
-echo "Main packages installed."
-
-echo "Checking to see if we are on a kali system..."
-
 export KALI_CHECK
 KALI_CHECK="$(distro |grep -c kali ||true)"
 
 if [ "$KALI_CHECK" = 0 ]; then
 
-  echo "We are not on a kali system, installing regular NTP packages..."
-export DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpdate \
   ntp
 fi
 
 if [ "$KALI_CHECK" = 1 ]; then
-  echo "We are on a kali system, installing Kali NTP packages..."
-export DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpsec-ntpdate \
   ntpsec
 fi
@@ -341,6 +335,7 @@ systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 
 systemctl stop rsyslog 
 systemctl start rsyslog
+
 logger "hi hi from $(hostname)"
 
 if [ "$KALI_CHECK" -eq 0 ]; then
@@ -353,7 +348,6 @@ if [ "$KALI_CHECK" -eq 1 ]; then
   systemctl restart ntpsec.service
 fi
 
-systemctl enable
 systemctl stop postfix
 systemctl start postfix
 
