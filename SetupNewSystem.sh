@@ -409,6 +409,13 @@ echo Now running "$FUNCNAME"
 echo Completed running "$FUNCNAME"
 }
 
+function secharden-ossec()
+{
+echo Now running "$FUNCNAME"
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
+echo Completed running "$FUNCNAME"
+}
+
 function secharden-scap-stig()
 {
 echo Now running "$FUNCNAME"
@@ -443,5 +450,6 @@ secharden-ssh
 #secharden-2fa
 #secharden-auto-upgrades
 #secharden-audit-agents
+#secharden-ossec
 #secharden-scap-stig
 #auth-cloudron-ldap
