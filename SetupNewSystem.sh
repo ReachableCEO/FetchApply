@@ -341,12 +341,16 @@ global-postPackageConfiguration
 curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(whcih bash)
 
 # Auto Upgrades
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-auto-upgrades.sh|$(whcih bash)
 
 # 2fa
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(whcih bash)
 
 # Audit agents
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(whcih bash)
 
 # SCAP/STIG/Compliance As Code
+#curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(whcih bash)
 
 
 ####################################################################################################
@@ -354,3 +358,4 @@ curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(whcih bash)
 ####################################################################################################
 
 # Cloudron ldap
+#curl --silent ${DL_ROOT}/Modules/Security/auth-cloudron-ldap.sh|$(whcih bash)
