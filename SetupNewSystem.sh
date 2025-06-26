@@ -90,9 +90,17 @@ curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod
 
 echo "Setting up librenms agent..."
 
-rm -rf /usr/local/librenms-agent || true
-curl --silent ${DL_ROOT}/Agents/librenms.tar.gz > /usr/local/librenms.tar.gz
-cd /usr/local && tar xfz librenms.tar.gz && rm -f /usr/local/librenms.tar.gz
+if [ ! -d /usr/local/librenms-agent ]; then
+mkdir -p /usr/local/librenms-agent
+fi
+
+curl --silent ${DL_ROOT}/Agents/librenms/ntp-client.sh > /usr/local/librenms-agent/ntp-client.sh
+curl --silent ${DL_ROOT}/Agents/librenms/ntp-server.sh > /usr/local/librenms-agent/ntp-server.sh
+curl --silent ${DL_ROOT}/Agents/librenms/os-updates.sh > /usr/local/librenms-agent/os-updates.sh
+curl --silent ${DL_ROOT}/Agents/librenms/postfixdetailed.sh > /usr/local/librenms-agent/postfixdetailed.sh
+curl --silent ${DL_ROOT}/Agents/librenms/postfix-queues.sh > /usr/local/librenms-agent/postfixdetailed.sh
+curl --silent ${DL_ROOT}/Agents/librenms/smart > /usr/local/librenms-agent/smart
+curl --silent ${DL_ROOT}/Agents/librenms/smart.config > /usr/local/librenms-agent/smart.config
 
 echo Completed running "$FUNCNAME"
 
