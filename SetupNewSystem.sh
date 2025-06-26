@@ -342,8 +342,6 @@ systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 systemctl stop rsyslog 
 systemctl start rsyslog
 
-logger "hi hi from $(hostname)"
-
 if [ "$KALI_CHECK" -eq 0 ]; then
   curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntp 
@@ -460,8 +458,9 @@ global-postPackageConfiguration
 
 secharden-ssh
 secharden-wazuh
-#secharden-2fa
 #secharden-auto-upgrades
 #secharden-audit-agents
+
+#secharden-2fa
 #secharden-scap-stig
 #auth-cloudron-ldap
