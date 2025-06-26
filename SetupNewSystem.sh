@@ -160,8 +160,8 @@ sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
 
 # Setup lynis repo, used for sec ops/compliance
 
-echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" > /etc/apt/sources.list.d/cisofy-lynis.list
-curl --silent --insecure -s https://packages.cisofy.com/keys/cisofy-software-public.key | apt-key add -
+curl -fsSL https://packages.cisofy.com/keys/cisofy-software-public.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cisofy-software-public.gpg
+echo "deb [arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/cisofy-software-public.gpg] https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list
 
 # Setup tailscale
 
@@ -286,8 +286,6 @@ function global-postPackageConfiguration()
 
 echo Now running "$FUNCNAME"
 
-apt-file update
-
 systemctl stop postfix
 
 curl --silent ${DL_ROOT}/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
@@ -313,7 +311,7 @@ chsh -s "$(which zsh)" localuser
 fi
 
 if [ "$SUBODEV_CHECK" -gt 0 ]; then
-chsh -s "$(which zsh)" localuser
+chsh -s "$(which zsh)" subodev
 fi
 
 ###Post package deployment bits
@@ -327,15 +325,15 @@ sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service
 
 pi-detect
 
-if [ $IS_RASPI -eq 1 ] ; then
+if [ "$IS_RASPI" -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
-if [ $IS_PHYSICAL_HOST -eq 1 ] ; then
+if [ "$IS_PHYSICAL_HOST" -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-physicalhost.conf > /etc/snmp/snmpd.conf 
 fi
 
-if [ $IS_VIRT_GUEST -eq 1 ] ; then
+if [ "$IS_VIRT_GUEST" -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
@@ -362,7 +360,7 @@ systemctl start postfix
 /usr/sbin/accton on
 
 
-if [ $PHYSICAL_HOST -gt 0 ]; then
+if [ "$PHYSICAL_HOST" -gt 0 ]; then
 cpufreq-set -r -g performance
 cpupower frequency-set --governor performance
 
@@ -380,7 +378,6 @@ fi
 
 echo Completed running "$FUNCNAME"
 }
-
 
 
 ####################################################################################################
