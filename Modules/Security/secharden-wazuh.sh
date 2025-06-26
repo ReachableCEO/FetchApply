@@ -7,11 +7,11 @@ TSYS_NSM_CHECK="$(hostname |grep -c tsys-nsm ||true)"
 
 if [ "$TSYS_NSM_CHECK" -eq 0 ]; then
 
-if [ -f /usr/share/keyrings/wazuh.gpg ]; then
-    rm -f /usr/share/keyrings/wazuh.gpg
-fi
+    if [ -f /usr/share/keyrings/wazuh.gpg ]; then
+        rm -f /usr/share/keyrings/wazuh.gpg
+    fi
 
-curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import 
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
 chmod 644 /usr/share/keyrings/wazuh.gpg
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" > /etc/apt/sources.list.d/wazuh.list
 apt-get update
