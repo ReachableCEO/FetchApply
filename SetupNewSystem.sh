@@ -160,6 +160,10 @@ sh /tmp/webmin-setup.sh -f && rm -f /tmp/webmin-setup.sh
 
 # Setup lynis repo, used for sec ops/compliance
 
+if [ -f /etc/apt/trusted.gpg.d/cisofy-software-public.gpg ]; then
+rm -f /etc/apt/trusted.gpg.d/cisofy-software-public.gpg
+fi
+
 curl -fsSL https://packages.cisofy.com/keys/cisofy-software-public.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/cisofy-software-public.gpg
 echo "deb [arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/cisofy-software-public.gpg] https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list
 
