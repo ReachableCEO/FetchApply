@@ -270,7 +270,7 @@ if [[ $PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
  i7z \
  thermald \
- cpupower
+ linux-cpupower
 # power-profiles-daemon
 fi
 
