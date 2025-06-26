@@ -122,7 +122,7 @@ chmod 400 /root/.ssh/authorized_keys
 chown root: /root/.ssh/authorized_keys
 
 
-if [ "$LOCALUSER_CHECK" = 1 ]; then
+if [ "$LOCALUSER_CHECK" -gt 0 ]; then
   if [ ! -d $LOCALUSER_SSH_DIR ]; then 
      mkdir -p /home/localuser/.ssh/
   fi
@@ -253,6 +253,9 @@ fi
 export VIRT_TYPE
 VIRT_TYPE="$(virt-what)"
 
+export IS_VIRT_GUEST
+VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep -c 'hyperv|kvm' ||true )"
+
 export VIRT_GUEST
 VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' ||true )"
 
@@ -270,6 +273,7 @@ if [[ $PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
  i7z \
  thermald \
+ cpufrequtils \
  linux-cpupower
 # power-profiles-daemon
 fi
@@ -304,11 +308,11 @@ echo "hi from root to root" | mail -s "hi directly to root from $(hostname)" roo
 
 chsh -s $(which zsh) root
 
-if [ "$LOCALUSER_CHECK" = 1 ]; then
+if [ "$LOCALUSER_CHECK" -gt 0 ]; then
 chsh -s "$(which zsh)" localuser
 fi
 
-if [ "$SUBODEV_CHECK" = 1 ]; then
+if [ "$SUBODEV_CHECK" -gt 0 ]; then
 chsh -s "$(which zsh)" localuser
 fi
 
@@ -323,11 +327,15 @@ sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service
 
 pi-detect
 
-if [ $IS_RASPI = 1 ] ; then
+if [ $IS_RASPI -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
-if [ $IS_RASPI != 1 ] ; then
+if [ $IS_PHYSICAL_HOST -eq 1 ] ; then
+curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-physicalhost.conf > /etc/snmp/snmpd.conf 
+fi
+
+if [ $IS_VIRT_GUEST -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
