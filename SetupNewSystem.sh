@@ -206,6 +206,8 @@ gpg  \
 molly-guard  \
 fail2ban \
 lshw  \
+fzf \
+ripgrep \
 sudo  \
 mailutils \
 clamav \
