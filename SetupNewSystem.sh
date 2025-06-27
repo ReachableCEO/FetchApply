@@ -2,9 +2,32 @@
 
 # Standard strict mode and error handling boilderplate...
 
-set -e 
+set -o errexit
+set -o nounset
 set -o pipefail
 set -o functrace
+
+export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
+
+function error_out()
+{
+        echo "Bailing out. See above for reason...."
+        exit 1
+}
+
+function handle_failure() {
+  local lineno=$1
+  local fn=$2
+  local exitstatus=$3
+  local msg=$4
+  local lineno_fns=${0% 0}
+  if [[ "$lineno_fns" != "-1" ]] ; then
+    lineno="${lineno} ${lineno_fns}"
+  fi
+  echo "${BASH_SOURCE[0]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
+}
+
+trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
 # Start actual script logic here...
 
@@ -32,19 +55,6 @@ function error_out()
         exit 1
 }
 
-function handle_failure() {
-  local lineno=$1
-  local fn=$2
-  local exitstatus=$3
-  local msg=$4
-  local lineno_fns=${0% 0}
-  if [[ "$lineno_fns" != "-1" ]] ; then
-    lineno="${lineno} ${lineno_fns}"
-  fi
-  echo "${BASH_SOURCE[0]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
-}
-
-trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
 function PreflightCheck()
 {
@@ -268,15 +278,14 @@ export VIRT_TYPE
 VIRT_TYPE="$(virt-what)"
 
 export IS_VIRT_GUEST
-VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep -c 'hyperv|kvm' ||true )"
+IS_VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep -c 'hyperv|kvm' ||true )"
 
-export VIRT_GUEST
-VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep 'hyperv|kvm' ||true )"
+export IS_KVM_GUEST
+IS_KVM_GUEST="$(echo "$VIRT_TYPE"|grep -c 'kvm' || true)"
 
-export KVM_GUEST
-KVM_GUEST="$(echo "$VIRT_TYPE"|grep 'kvm' || true)"
 
-if [[ $KVM_GUEST = 1 ]]; then
+
+if [[ $IS_KVM_GUEST = 1 ]]; then
   apt -y install qemu-guest-agent
 fi
 
@@ -343,11 +352,11 @@ if [ "$IS_RASPI" -eq 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
-if [ "$IS_PHYSICAL_HOST" -eq 1 ] ; then
+if [ "$IS_PHYSICAL_HOST" = 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-physicalhost.conf > /etc/snmp/snmpd.conf 
 fi
 
-if [ "$IS_VIRT_GUEST" -eq 1 ] ; then
+if [ "$IS_VIRT_GUEST" = 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
@@ -356,13 +365,13 @@ systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
 systemctl stop rsyslog 
 systemctl start rsyslog
 
-if [ "$KALI_CHECK" -eq 0 ]; then
-  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
+if [ "$KALI_CHECK" = 0 ]; then
+  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
   systemctl restart ntp 
 fi
 
-if [ "$KALI_CHECK" -eq 1 ]; then
-  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
+if [ "$KALI_CHECK" = 1 ]; then
+  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntpsec.service
 fi
 
@@ -384,7 +393,7 @@ cpupower frequency-set --governor performance
 
 fi
 
-if [ "$VIRT_GUEST" = 1 ]; then
+if [ "$IS_VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
 fi
 
@@ -432,7 +441,7 @@ echo Now running "$FUNCNAME"
 echo Completed running "$FUNCNAME"
 }
 
-function secharden-audit-agents()
+function secharden-agents()
 {
 echo Now running "$FUNCNAME"
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
@@ -472,9 +481,9 @@ global-postPackageConfiguration
 
 secharden-ssh
 secharden-wazuh
+secharden-scap-stig
+#secharden-agents
 #secharden-auto-upgrades
-#secharden-audit-agents
 
 #secharden-2fa
-#secharden-scap-stig
 #auth-cloudron-ldap
