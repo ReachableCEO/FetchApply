@@ -6,7 +6,6 @@ CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
 export LOGFILENAME
 LOGFILENAME="$0.${CURRENT_TIMESTAMP}.$$"
 
-touch $LOGFILENAME
 
 # Standard strict mode and error handling boilderplate...
 
@@ -501,6 +500,8 @@ print_info "Completed running "$FUNCNAME""
 ####################################################################################################
 # RUn the various functions in the correct order
 ####################################################################################################
+
+echo > $LOGFILENAME
 
 print_info "Execution starting at $CURRENT_TIMESTAMP..."
 
