@@ -100,12 +100,12 @@ fi
 if [ ! -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="0"
 fi
-print_info Completed running "$FUNCNAME"
+print_info "Now completed running "$FUNCNAME"...."
 }
 
 function global-oam()
 {
-print_info Now running "$FUNCNAME"....
+print_info "Now running "$FUNCNAME"...."
 
 curl --silent ${DL_ROOT}/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
 curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
