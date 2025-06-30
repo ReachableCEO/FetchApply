@@ -4,7 +4,7 @@ export CURRENT_TIMESTAMP
 CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
 
 export LOGFILENAME
-LOGFILENAME="${BASH_SOURCE[0]}.${CURRENT_TIMESTAMP}.$$"
+LOGFILENAME="SetupNewSystem.${CURRENT_TIMESTAMP}.$$"
 
 
 # Standard strict mode and error handling boilderplate...
