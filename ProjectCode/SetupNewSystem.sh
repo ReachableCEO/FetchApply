@@ -389,7 +389,7 @@ print_info "Completed running "$FUNCNAME""
 function secharden-wazuh()
 {
 print_info "Now running "$FUNCNAME""
-bash ../Modules/Security/secharden-wazuh.sh
+bash ./Modules/Security/secharden-wazuh.sh
 print_info "Completed running "$FUNCNAME""
 }
 
@@ -418,7 +418,7 @@ print_info "Completed running "$FUNCNAME""
 function secharden-scap-stig()
 {
 print_info "Now running "$FUNCNAME""
-bash ../Modules/Security/secharden-scap-stig.sh
+bash ./Modules/Security/secharden-scap-stig.sh
 print_info "Completed running "$FUNCNAME""
 }
 
