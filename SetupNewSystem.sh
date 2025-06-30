@@ -1,5 +1,11 @@
 #!/usr/bin/bash
 
+export CURRENT_TIMESTAMP
+CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
+
+export LOGFILENAME
+LOGFILENAME="$0.${CURRENT_TIMESTAMP}.$$"
+
 # Standard strict mode and error handling boilderplate...
 
 set -o errexit
@@ -15,6 +21,7 @@ function print_info()
   NC='\033[0m'
   tput bold
   echo -e "$GREEN $1${NC}"
+  echo "$GREEN $1${NC}" >> "$LOGFILENAME"
   tput sgr0
 }
 
@@ -25,6 +32,7 @@ function print_error()
   tput bold
   echo -e "$RED $1${NC}"
   echo "$1"
+  echo "$RED $1${NC}" >> "$LOGFILENAME"
   tput sgr0
 }
 
