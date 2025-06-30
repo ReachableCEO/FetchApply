@@ -1,41 +1,8 @@
 
-#####
-#Core framework functions...
-#####
-
-export FRAMEWORK_INCLUDES_FULL_PATH
-FRAMEWORK_INCLUDES_FULL_PATH="$(realpath ../Framework-Includes)"
-
-export FRAMEWORK_CONFIGS_FULL_PATH
-FRAMEWORK_CONFIGS_FULL_PATH="$(realpath ../Framework-ConfigFiles)"
-
-export PROJECT_INCLUDES_FULL_PATH
-PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-Includes)"
-
-export PROJECT_CONGIGS_FULL_PATH
-PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-ConfigFiles)"
-
-#Framework variables are read from hee
-source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
-
-#Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none ../Framework-Includes/*)"
-
-IFS=$'\n\t'
-for file in ${FrameworkIncludeFiles[@]}; do
-	source "$file"
-done
-unset IFS
-
-ProjectIncludeFiles="$(ls -1 --color=none ../Project-Includes/*)"
-IFS=$'\n\t'
-for file in ${ProjectIncludeFiles[@]}; do
-	source "$file"
-done
-unset IFS
 print_info "Setting up librenms agent..."
 
-cat ./scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
+cat ../../Agents/distro > /usr/local/bin/distro 
+chmod +x /usr/local/bin/distro
 
 if [ ! -d /usr/local/check_mk_agent ]; then
 mkdir -p /usr/local/check_mk_agent
