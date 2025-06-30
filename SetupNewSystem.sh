@@ -500,6 +500,8 @@ print_info "Completed running "$FUNCNAME""
 # RUn the various functions in the correct order
 ####################################################################################################
 
+print_info "Execution starting at $CURRENT_TIMESTAMP..."
+
 PreflightCheck
 global-oam
 global-installPackages
@@ -514,3 +516,5 @@ secharden-scap-stig
 
 #secharden-2fa
 #auth-cloudron-ldap
+
+print_info "Execution ended at $CURRENT_TIMESTAMP..."
