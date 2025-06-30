@@ -64,7 +64,9 @@ print_info "Now running "$FUNCNAME"...."
 
 cat ./scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
+cd Modules/OAM
 bash ./Modules/OAM/oam-librenms.sh
+cd -
 
 print_info "Completed running "$FUNCNAME""
 
