@@ -124,13 +124,13 @@ curl --silent ${DL_ROOT}/Agents/librenms/postfix-queues.sh > /usr/local/librenms
 curl --silent ${DL_ROOT}/Agents/librenms/smart > /usr/local/librenms-agent/smart
 curl --silent ${DL_ROOT}/Agents/librenms/smart.config > /usr/local/librenms-agent/smart.config
 
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 
 }
 
 function global-systemServiceConfigurationFiles()
 {
-print_info Now running "$FUNCNAME"....
+print_info "Now running "$FUNCNAME"...."
 
 
 curl --silent ${DL_ROOT}/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
@@ -173,12 +173,12 @@ fi
 
 newaliases
 
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function global-installPackages()
 {
-print_info Now running "$FUNCNAME"....
+print_info "Now running "$FUNCNAME"...."
 
 
 # Setup webmin repo, used for RBAC/2fa PAM
@@ -214,7 +214,7 @@ apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
 
 # add stuff we want
 
-print_info "Now installing all the packages..."
+print_info ""Now installing all the packages...""
 
 DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 virt-what \
@@ -311,13 +311,13 @@ export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::=
 # power-profiles-daemon
 fi
 
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function global-postPackageConfiguration()
 {
 
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 
 systemctl --now enable auditd
 
@@ -408,7 +408,7 @@ if [ "$IS_VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
 fi
 
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 
@@ -424,47 +424,47 @@ print_info Completed running "$FUNCNAME"
 
 function secharden-ssh()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 
 curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
 
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function secharden-wazuh()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 curl --silent ${DL_ROOT}/Modules/Security/secharden-wazuh.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function secharden-auto-upgrades()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function secharden-2fa()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 function secharden-agents()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 
 function secharden-scap-stig()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 
@@ -474,9 +474,9 @@ print_info Completed running "$FUNCNAME"
 
 function auth-cloudron-ldap()
 {
-print_info Now running "$FUNCNAME"
+print_info "Now running "$FUNCNAME""
 #curl --silent ${DL_ROOT}/Modules/Auth/auth-cloudron-ldap.sh|$(which bash)
-print_info Completed running "$FUNCNAME"
+print_info "Completed running "$FUNCNAME""
 }
 
 
