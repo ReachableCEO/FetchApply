@@ -4,7 +4,7 @@ export CURRENT_TIMESTAMP
 CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
 
 export LOGFILENAME
-LOGFILENAME="$0.${CURRENT_TIMESTAMP}.$$"
+LOGFILENAME="./$0.${CURRENT_TIMESTAMP}.$$"
 
 # Standard strict mode and error handling boilderplate...
 
