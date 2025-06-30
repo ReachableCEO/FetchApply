@@ -62,19 +62,6 @@ DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
 # Support functions
 #######################
 
-function pi-detect()
-{
-print_info "Now running "$FUNCNAME"...."
-if [ -f /sys/firmware/devicetree/base/model ] ; then
-export IS_RASPI="1"
-fi
-
-if [ ! -f /sys/firmware/devicetree/base/model ] ; then
-export IS_RASPI="0"
-fi
-print_info "Now completed running "$FUNCNAME"...."
-}
-
 function global-oam()
 {
 print_info "Now running "$FUNCNAME"...."
