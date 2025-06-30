@@ -296,21 +296,21 @@ curl --silent ${DL_ROOT}/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.con
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 
-curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
+cat ./ConfigFiles/SNMP/snmp-sudo.conf > /etc/sudoers.d/Debian-snmp
 sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service 
 
 pi-detect
 
 if [ "$IS_RASPI" = 1 ] ; then
-curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
+cat ./ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
 if [ "$IS_PHYSICAL_HOST" = 1 ] ; then
-curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-physicalhost.conf > /etc/snmp/snmpd.conf 
+cat ./ConfigFiles/SNMP/snmpd-physicalhost.conf > /etc/snmp/snmpd.conf 
 fi
 
 if [ "$IS_VIRT_GUEST" = 1 ] ; then
-curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
+cat ./ConfigFiles/SNMP/snmpd.conf > /etc/snmp/snmpd.conf
 fi
 
 systemctl daemon-reload && systemctl restart  snmpd && /etc/init.d/snmpd restart
@@ -319,12 +319,12 @@ systemctl stop rsyslog
 systemctl start rsyslog
 
 if [ "$KALI_CHECK" = 0 ]; then
-  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
+  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
   systemctl restart ntp 
 fi
 
 if [ "$KALI_CHECK" = 1 ]; then
-  curl --silent ${DL_ROOT}/ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
+  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntpsec.service
 fi
 
@@ -368,7 +368,7 @@ function secharden-ssh()
 {
 print_info "Now running "$FUNCNAME""
 
-curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
+bash ./Modules/Security/secharden-ssh.sh|$(which bash)
 
 print_info "Completed running "$FUNCNAME""
 }
