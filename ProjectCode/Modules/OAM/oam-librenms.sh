@@ -24,8 +24,8 @@ systemctl enable check_mk.socket
 systemctl start check_mk.socket
 
 
-cat ../../Agents/librenms/ntp-client.sh > /usr/lib/check_mk_agent/local/ntp-client.sh
-cat ../../Agents/librenms/ntp-server.sh > /usr/lib/check_mk_agent/local/ntp-server.sh
+cat ../../Agents/librenms/ntp-client.sh > /usr/local/check_mk_agent/local/ntp-client.sh
+cat ../../Agents/librenms/ntp-server.sh > /usr/local/check_mk_agent/local/ntp-server.sh
 cat ../../Agents/librenms/os-updates.sh > /usr/local/check_mk_agent/local/os-updates.sh
 cat ../../Agents/librenms/postfixdetailed.sh > /usr/local/check_mk_agent/local/postfixdetailed.sh
 cat ../../Agents/librenms/postfix-queues.sh > /usr/local/check_mk_agent/local/postfix_queues.sh
