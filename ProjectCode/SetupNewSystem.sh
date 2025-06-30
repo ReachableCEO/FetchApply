@@ -19,8 +19,6 @@ PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-ConfigFiles)"
 #Framework variables are read from hee
 source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
 
-set -x
-
 #Boilerplate and support functions
 FrameworkIncludeFiles="$(ls -1 --color=none ../Framework-Includes/*)"
 
@@ -36,9 +34,6 @@ for file in ${ProjectIncludeFiles[@]}; do
 	source "$file"
 done
 unset IFS
-
-set +x
-exit
 
 # Start actual script logic here...
 
