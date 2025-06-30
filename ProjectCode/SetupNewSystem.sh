@@ -25,7 +25,7 @@ FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/*)"
 
 IFS=$'\n\t'
 for file in ${FrameworkIncludeFiles[@]}; do
-	. "$file"
+	source "$file"
 done
 unset IFS
 
@@ -33,7 +33,7 @@ unset IFS
 ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
 IFS=$'\n\t'
 for file in ${ProjectIncludeFiles[@]}; do
-	. "$file"
+	source "$file"
 done
 unset IFS
 
