@@ -29,11 +29,32 @@ function handle_failure() {
 
 trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
 
+function PreflightCheck()
+{
+
+export curr_user="$USER"
+export user_check
+
+user_check="$(echo "$curr_user" | grep -c root)"
+
+
+if [ $user_check -ne 1 ]; then
+    echo "Must run as root."
+    error_out
+fi
+
+echo "All checks passed...."
+
+}
+
 # Start actual script logic here...
 
 #################
 #Global variables
 #################
+
+export IS_PHYSICAL_HOST
+IS_PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell ||true)"
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd|grep -c subodev || true)"
@@ -48,35 +69,6 @@ DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
 #######################
 # Support functions
 #######################
-
-function error_out()
-{
-        echo "Bailing out. See above for reason...."
-        exit 1
-}
-
-
-function PreflightCheck()
-{
-
-
-export curr_user="$USER"
-export user_check
-
-user_check="$(echo "$curr_user" | grep -c root)"
-
-
-if [ $user_check -ne 1 ]; then
-    echo "Must run as root."
-    error_out
-fi
-
-#Your additional stuff here...
-
-echo "All checks passed...."
-
-}
-
 
 function pi-detect()
 {
@@ -124,8 +116,6 @@ echo Now running "$FUNCNAME"....
 curl --silent ${DL_ROOT}/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
 curl --silent ${DL_ROOT}/ConfigFiles/SMTP/aliases > /etc/aliases 
 curl --silent ${DL_ROOT}/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -198,6 +188,8 @@ curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.l
 
 #Remove stuff we don't want
 
+apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
+
 #export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
 
 # add stuff we want
@@ -206,6 +198,9 @@ echo "Now installing all the packages..."
 
 DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 virt-what \
+auditd \
+audispd-plugins \
+aide \
 htop  \
 dstat  \
 snmpd  \
@@ -226,7 +221,6 @@ net-tools  \
 dos2unix \
 gpg  \
 molly-guard  \
-fail2ban \
 lshw  \
 fzf \
 ripgrep \
@@ -237,7 +231,6 @@ sl \
 rsyslog  \
 logwatch \
 git \
-rsync \
 net-tools \
 tshark \
 tcpdump \
@@ -255,8 +248,7 @@ cockpit \
 iptables \
 netfilter-persistent \
 iptables-persistent \
-postfix \
-telnet 
+postfix 
 
 export KALI_CHECK
 KALI_CHECK="$(distro |grep -c kali ||true)"
@@ -289,10 +281,8 @@ if [[ $IS_KVM_GUEST = 1 ]]; then
   apt -y install qemu-guest-agent
 fi
 
-export PHYSICAL_HOST
-PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell ||true)"
 
-if [[ $PHYSICAL_HOST -gt 0 ]]; then
+if [[ $IS_PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
  i7z \
  thermald \
@@ -309,10 +299,11 @@ function global-postPackageConfiguration()
 
 echo Now running "$FUNCNAME"
 
+systemctl --now enable auditd
+
 systemctl stop postfix
 
 curl --silent ${DL_ROOT}/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
-dos2unix /etc/postfix/generic
 postmap /etc/postfix/generic
 
 postconf -e "inet_protocols = ipv4" 
@@ -348,7 +339,7 @@ sed -i "s|-Lsd|-LS6d|" /lib/systemd/system/snmpd.service
 
 pi-detect
 
-if [ "$IS_RASPI" -eq 1 ] ; then
+if [ "$IS_RASPI" = 1 ] ; then
 curl --silent ${DL_ROOT}/ConfigFiles/SNMP/snmpd-rpi.conf > /etc/snmp/snmpd.conf 
 fi
 
@@ -381,7 +372,7 @@ systemctl start postfix
 /usr/sbin/accton on
 
 
-if [ "$PHYSICAL_HOST" -gt 0 ]; then
+if [ "$IS_PHYSICAL_HOST" -gt 0 ]; then
 cpufreq-set -r -g performance
 cpupower frequency-set --governor performance
 
@@ -452,7 +443,7 @@ echo Completed running "$FUNCNAME"
 function secharden-scap-stig()
 {
 echo Now running "$FUNCNAME"
-#curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
+curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
 echo Completed running "$FUNCNAME"
 }
 

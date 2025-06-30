@@ -2,12 +2,19 @@ Include /etc/ssh/sshd_config.d/*.conf
 HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
 KbdInteractiveAuthentication no
-X11Forwarding yes
 PrintMotd no
 PasswordAuthentication no
+AllowTcpForwarding no
+X11Forwarding no
 ChallengeResponseAuthentication no
-Banner none
 AcceptEnv LANG LC_*
 Subsystem       sftp    /usr/lib/openssh/sftp-server
 UsePAM yes
+Banner /etc/issue.net
+MaxAuthTries 2
+MaxStartups 10:30:100
 PermitRootLogin prohibit-password
+ClientAliveInterval 300
+ClientAliveCountMax 3
+AllowUsers root localuser subodev
+LoginGraceTime 60
