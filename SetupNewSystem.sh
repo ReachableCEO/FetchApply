@@ -9,9 +9,28 @@ set -o functrace
 
 export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
 
+function print_info()
+{
+  tput bold
+  tput setaf 1
+  echo "$1"
+  tpug sgr0
+
+}
+
+function print_error()
+{
+  tput bold
+  tput setaf 1
+  echo "$1"
+  tpug sgr0
+
+}
+
 function error_out()
 {
-        echo "Bailing out. See above for reason...."
+        print_error "$1"
+        print_error "Bailing out. See above for reason...."
         exit 1
 }
 
@@ -39,11 +58,11 @@ user_check="$(echo "$curr_user" | grep -c root)"
 
 
 if [ $user_check -ne 1 ]; then
-    echo "Must run as root."
+    print_error "Must run as root."
     error_out
 fi
 
-echo "All checks passed...."
+print_info "All checks passed...."
 
 }
 
@@ -72,7 +91,7 @@ DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
 
 function pi-detect()
 {
-echo Now running "$FUNCNAME"....
+print_info Now running "$FUNCNAME"....
 if [ -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="1"
 fi
@@ -80,17 +99,17 @@ fi
 if [ ! -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="0"
 fi
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function global-oam()
 {
-echo Now running "$FUNCNAME"....
+print_info Now running "$FUNCNAME"....
 
 curl --silent ${DL_ROOT}/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
 curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
-echo "Setting up librenms agent..."
+print_info "Setting up librenms agent..."
 
 if [ ! -d /usr/local/librenms-agent ]; then
 mkdir -p /usr/local/librenms-agent
@@ -104,13 +123,13 @@ curl --silent ${DL_ROOT}/Agents/librenms/postfix-queues.sh > /usr/local/librenms
 curl --silent ${DL_ROOT}/Agents/librenms/smart > /usr/local/librenms-agent/smart
 curl --silent ${DL_ROOT}/Agents/librenms/smart.config > /usr/local/librenms-agent/smart.config
 
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 
 }
 
 function global-systemServiceConfigurationFiles()
 {
-echo Now running "$FUNCNAME"....
+print_info Now running "$FUNCNAME"....
 
 
 curl --silent ${DL_ROOT}/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
@@ -153,12 +172,12 @@ fi
 
 newaliases
 
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function global-installPackages()
 {
-echo Now running "$FUNCNAME"....
+print_info Now running "$FUNCNAME"....
 
 
 # Setup webmin repo, used for RBAC/2fa PAM
@@ -194,7 +213,7 @@ apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
 
 # add stuff we want
 
-echo "Now installing all the packages..."
+print_info "Now installing all the packages..."
 
 DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
 virt-what \
@@ -291,13 +310,13 @@ export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::=
 # power-profiles-daemon
 fi
 
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function global-postPackageConfiguration()
 {
 
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 
 systemctl --now enable auditd
 
@@ -388,7 +407,7 @@ if [ "$IS_VIRT_GUEST" = 1 ]; then
   tuned-adm profile virtual-guest
 fi
 
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 
@@ -404,47 +423,47 @@ echo Completed running "$FUNCNAME"
 
 function secharden-ssh()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 
 curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
 
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function secharden-wazuh()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 curl --silent ${DL_ROOT}/Modules/Security/secharden-wazuh.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function secharden-auto-upgrades()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function secharden-2fa()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 function secharden-agents()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 #curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 
 function secharden-scap-stig()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 
@@ -454,9 +473,9 @@ echo Completed running "$FUNCNAME"
 
 function auth-cloudron-ldap()
 {
-echo Now running "$FUNCNAME"
+print_info Now running "$FUNCNAME"
 #curl --silent ${DL_ROOT}/Modules/Auth/auth-cloudron-ldap.sh|$(which bash)
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
 
 
