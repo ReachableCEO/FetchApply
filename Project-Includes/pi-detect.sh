@@ -1,7 +1,7 @@
 
 function pi-detect()
 {
-echo Now running "$FUNCNAME"....
+print_info Now running "$FUNCNAME"....
 if [ -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="1"
 fi
@@ -9,5 +9,5 @@ fi
 if [ ! -f /sys/firmware/devicetree/base/model ] ; then
 export IS_RASPI="0"
 fi
-echo Completed running "$FUNCNAME"
+print_info Completed running "$FUNCNAME"
 }
