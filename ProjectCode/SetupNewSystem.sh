@@ -4,6 +4,9 @@
 #Core framework functions...
 #####
 
+export PROJECT_ROOT_PATH
+PROJECT_ROOT_PATH="$(realpath ../)"
+
 export FRAMEWORK_INCLUDES_FULL_PATH
 FRAMEWORK_INCLUDES_FULL_PATH="$(realpath ../Framework-Includes)"
 
