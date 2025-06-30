@@ -1,7 +1,23 @@
+#Boilerplate and support functions
+FrameworkIncludeFiles="$(ls -1 --color=none ../../../Framework-Includes/*)"
+
+IFS=$'\n\t'
+for file in ${FrameworkIncludeFiles[@]}; do
+	source "$file"
+done
+unset IFS
+
+ProjectIncludeFiles="$(ls -1 --color=none ../../../Project-Includes/*)"
+IFS=$'\n\t'
+for file in ${ProjectIncludeFiles[@]}; do
+	source "$file"
+done
+unset IFS
+
 
 print_info "Setting up librenms agent..."
 
-cat ../../Agents/distro > /usr/local/bin/distro 
+cat ../../Agents/librenms/distro > /usr/local/bin/distro 
 chmod +x /usr/local/bin/distro
 
 if [ ! -d /usr/local/check_mk_agent ]; then
@@ -16,10 +32,10 @@ if [ ! -d /usr/local/check_mk_agent/local ]; then
 mkdir -p /usr/local/check_mk_agent/local
 fi
 
-cat ../Agents/librenms/check_mk_agent > /usr/bin/check_mk_agent
+cat ../../Agents/librenms/check_mk_agent > /usr/bin/check_mk_agent
 chmod +x /usr/bin/check_mk_agent
 
-cat ../Agents/librenms/check_mk@.service check_mk.socket > /etc/systemd/system
+cat ../../Agents/librenms/check_mk@.service check_mk.socket > /etc/systemd/system
 systemctl enable check_mk.socket 
 systemctl start check_mk.socket
 
