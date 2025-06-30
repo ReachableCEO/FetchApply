@@ -11,20 +11,21 @@ export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
 
 function print_info()
 {
+  GREEN='\033[0;32m'
+  NC='\033[0m'
   tput bold
-  tput setaf 1
-  echo "$1"
+  echo -e "$GREEN $1${NC}"
   tput sgr0
-
 }
 
 function print_error()
 {
+  RED='\033[0;31m'
+  NC='\033[0m'
   tput bold
-  tput setaf 1
+  echo -e "$RED $1${NC}"
   echo "$1"
   tput sgr0
-
 }
 
 function error_out()
