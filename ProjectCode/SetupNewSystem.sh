@@ -22,7 +22,7 @@ source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
 set -x
 
 #Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/)"
+FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/*)"
 
 IFS=$'\n\t'
 for file in ${FrameworkIncludeFiles[@]}; do
@@ -30,7 +30,7 @@ for file in ${FrameworkIncludeFiles[@]}; do
 done
 unset IFS
 
-ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/)"
+ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
 IFS=$'\n\t'
 for file in ${ProjectIncludeFiles[@]}; do
 	source "$file"
