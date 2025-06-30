@@ -6,7 +6,6 @@ CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
 export LOGFILENAME
 LOGFILENAME="SetupNewSystem.${CURRENT_TIMESTAMP}.$$"
 
-
 # Standard strict mode and error handling boilderplate...
 
 set -o errexit
