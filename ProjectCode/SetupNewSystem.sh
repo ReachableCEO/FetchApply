@@ -1,87 +1,43 @@
 #!/usr/bin/bash
 
-export CURRENT_TIMESTAMP
-CURRENT_TIMESTAMP="$(date +%A-%Y-%m-%d-%T)"
+#####
+#Core framework functions...
+#####
 
-export LOGFILENAME
-LOGFILENAME="SetupNewSystem.${CURRENT_TIMESTAMP}.$$"
+export FRAMEWORK_INCLUDES_FULL_PATH
+FRAMEWORK_INCLUDES_FULL_PATH="$(realpath ../Framework-Includes)"
 
-# Standard strict mode and error handling boilderplate...
+export FRAMEWORK_CONFIGS_FULL_PATH
+FRAMEWORK_CONFIGS_FULL_PATH="$(realpath ../Framework-ConfigFiles)"
 
-set -o errexit
-set -o nounset
-set -o pipefail
-set -o functrace
+export PROJECT_INCLUDES_FULL_PATH
+PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-Includes)"
 
-export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
-
-function print_info()
-{
-  GREEN='\033[0;32m'
-  NC='\033[0m'
-  tput bold
-  echo -e "$GREEN $1${NC}"
-  echo -e "$GREEN $1${NC}" >> "$LOGFILENAME"
-  tput sgr0
-}
-
-function print_error()
-{
-  RED='\033[0;31m'
-  NC='\033[0m'
-  tput bold
-  echo -e "$RED $1${NC}"
-  echo "$1"
-  echo -e "$RED $1${NC}" >> "$LOGFILENAME"
-  tput sgr0
-}
-
-log_info_message() {
-  local message="$1"
-  local logfile="/var/log/my_script.log" # Define your log file path
-
-  echo "$message" | tee -a "$logfile"
-}
+export PROJECT_CONGIGS_FULL_PATH
+PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-ConfigFiles)"
 
 
-function error_out()
-{
-        print_error "$1"
-        print_error "Bailing out. See above for reason...."
-        exit 1
-}
+#Framework variables are read from hee
+source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
 
-function handle_failure() {
-  local lineno=$1
-  local fn=$2
-  local exitstatus=$3
-  local msg=$4
-  local lineno_fns=${0% 0}
-  if [[ "$lineno_fns" != "-1" ]] ; then
-    lineno="${lineno} ${lineno_fns}"
-  fi
-  echo "${BASH_SOURCE[0]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
-}
+#Boilerplate and support functions
+FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/*)"
 
-trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
-
-function PreflightCheck()
-{
-
-export curr_user="$USER"
-export user_check
-
-user_check="$(echo "$curr_user" | grep -c root)"
+IFS=$'\n\t'
+for file in ${FrameworkIncludeFiles[@]}; do
+	. "$file"
+done
+unset IFS
 
 
-if [ $user_check -ne 1 ]; then
-    print_error "Must run as root."
-    error_out
+if [[ ProjectIncludes = 1 ]]; then
+ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
+IFS=$'\n\t'
+for file in ${ProjectIncludeFiles[@]}; do
+	. "$file"
+done
+unset IFS
 fi
-
-print_info "All checks passed...."
-
-}
 
 # Start actual script logic here...
 

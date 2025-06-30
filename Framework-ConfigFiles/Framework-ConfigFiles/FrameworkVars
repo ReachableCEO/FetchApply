@@ -1,4 +1,0 @@
-#Global Variables used by the framework
-
-export ProjectIncludes="0"
-export PreflightCheck="0"

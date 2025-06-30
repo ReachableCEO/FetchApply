@@ -19,7 +19,8 @@ export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
 
 function error_out()
 {
-        echo "Bailing out. See above for reason...."
+        print_error "$1"
+        print_error "Bailing out. See above for reason...."
         exit 1
 }
 
