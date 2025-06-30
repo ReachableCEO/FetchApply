@@ -35,7 +35,9 @@ fi
 cat ../../Agents/librenms/check_mk_agent > /usr/bin/check_mk_agent
 chmod +x /usr/bin/check_mk_agent
 
-cat ../../Agents/librenms/check_mk@.service check_mk.socket > /etc/systemd/system
+cat ../../Agents/librenms/check_mk@.service > /etc/systemd/system/check_mk@.service
+cat ../../Agents/librenms/check_mk.socket > /etc/systemd/system/check_mk.socket
+
 systemctl enable check_mk.socket 
 systemctl start check_mk.socket
 
@@ -49,4 +51,3 @@ cat ../../Agents/librenms/smart > /usr/local/check_mk_agent/local/smart
 cat ../../Agents/librenms/smart.config > /usr/local/check_mk_agent/local/smart.config
 
 chmod +x /usr/lib/check_mk_agent/local/*
-
