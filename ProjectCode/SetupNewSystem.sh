@@ -30,14 +30,12 @@ done
 unset IFS
 
 
-if [[ ProjectIncludes = 1 ]]; then
 ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
 IFS=$'\n\t'
 for file in ${ProjectIncludeFiles[@]}; do
 	. "$file"
 done
 unset IFS
-fi
 
 # Start actual script logic here...
 
