@@ -28,6 +28,14 @@ function print_error()
   tput sgr0
 }
 
+log_info_message() {
+  local message="$1"
+  local logfile="/var/log/my_script.log" # Define your log file path
+
+  echo "$message" | tee -a "$logfile"
+}
+
+
 function error_out()
 {
         print_error "$1"
