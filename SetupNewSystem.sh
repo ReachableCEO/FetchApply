@@ -23,7 +23,7 @@ function print_info()
   NC='\033[0m'
   tput bold
   echo -e "$GREEN $1${NC}"
-  echo "$GREEN $1${NC}" >> "$LOGFILENAME"
+  echo -e "$GREEN $1${NC}" >> "$LOGFILENAME"
   tput sgr0
 }
 
@@ -34,7 +34,7 @@ function print_error()
   tput bold
   echo -e "$RED $1${NC}"
   echo "$1"
-  echo "$RED $1${NC}" >> "$LOGFILENAME"
+  echo -e "$RED $1${NC}" >> "$LOGFILENAME"
   tput sgr0
 }
 
