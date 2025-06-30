@@ -393,7 +393,7 @@ print_info "Completed running "$FUNCNAME""
 function secharden-wazuh()
 {
 print_info "Now running "$FUNCNAME""
-curl --silent ${DL_ROOT}/Modules/Security/secharden-wazuh.sh|$(which bash)
+bash ../Modules/Security/secharden-wazuh.sh
 print_info "Completed running "$FUNCNAME""
 }
 
@@ -422,7 +422,7 @@ print_info "Completed running "$FUNCNAME""
 function secharden-scap-stig()
 {
 print_info "Now running "$FUNCNAME""
-curl --silent ${DL_ROOT}/Modules/Security/secharden-scap-stig.sh|$(which bash)
+bash ../Modules/Security/secharden-scap-stig.sh
 print_info "Completed running "$FUNCNAME""
 }
 
