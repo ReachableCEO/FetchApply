@@ -14,7 +14,7 @@ function print_info()
   tput bold
   tput setaf 1
   echo "$1"
-  tpug sgr0
+  tput sgr0
 
 }
 
@@ -23,7 +23,7 @@ function print_error()
   tput bold
   tput setaf 1
   echo "$1"
-  tpug sgr0
+  tput sgr0
 
 }
 
