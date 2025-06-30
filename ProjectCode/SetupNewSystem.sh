@@ -62,22 +62,9 @@ function global-oam()
 {
 print_info "Now running "$FUNCNAME"...."
 
-curl --silent ${DL_ROOT}/scripts/distro > /usr/local/bin/distro && chmod +x /usr/local/bin/distro
-curl --silent ${DL_ROOT}/scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
+cat ./scripts/up2date.sh > /usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
-print_info "Setting up librenms agent..."
-
-if [ ! -d /usr/local/librenms-agent ]; then
-mkdir -p /usr/local/librenms-agent
-fi
-
-curl --silent ${DL_ROOT}/Agents/librenms/ntp-client.sh > /usr/local/librenms-agent/ntp-client.sh
-curl --silent ${DL_ROOT}/Agents/librenms/ntp-server.sh > /usr/local/librenms-agent/ntp-server.sh
-curl --silent ${DL_ROOT}/Agents/librenms/os-updates.sh > /usr/local/librenms-agent/os-updates.sh
-curl --silent ${DL_ROOT}/Agents/librenms/postfixdetailed.sh > /usr/local/librenms-agent/postfixdetailed.sh
-curl --silent ${DL_ROOT}/Agents/librenms/postfix-queues.sh > /usr/local/librenms-agent/postfixdetailed.sh
-curl --silent ${DL_ROOT}/Agents/librenms/smart > /usr/local/librenms-agent/smart
-curl --silent ${DL_ROOT}/Agents/librenms/smart.config > /usr/local/librenms-agent/smart.config
+bash ./Modules/OAM/oam-librenms.sh
 
 print_info "Completed running "$FUNCNAME""
 
