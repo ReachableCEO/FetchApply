@@ -23,8 +23,6 @@ LOCALUSER_SSH_DIR="/home/localuser/.ssh"
 export SUBODEV_SSH_DIR
 SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
-export NOT_UBUNTU_CHECK
-NOT_UBUNTU_CHECK="$(distro | grep -c -v Ubuntu || true)" 
 
 if [ ! -d $ROOT_SSH_DIR ]; then
   mkdir /root/.ssh/
@@ -60,7 +58,12 @@ cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
 
 #Don't deploy this config to a ubuntu server, it breaks openssh server. Works on kali/debian.
 
-if [ "$NOT_UBUNTU_CHECK" -eq 1 ]; then
+set -x
+
+export UBUNTU_CHECK
+UBUNTU_CHECK="$(distro | grep -c Ubuntu)" 
+
+if [ "$UBUNTU_CHECK" -ne 1 ]; then
   cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf >/etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 fi
 
