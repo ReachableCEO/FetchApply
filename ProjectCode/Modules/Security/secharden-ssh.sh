@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo $ProjectRootPath
-
-
 #Framework variables are read from hee
 source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
 

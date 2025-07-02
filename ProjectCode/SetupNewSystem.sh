@@ -343,7 +343,9 @@ function secharden-ssh()
 {
 print_info "Now running "$FUNCNAME""
 
+cd ./Modules/Security
 bash ./Modules/Security/secharden-ssh.sh|$(which bash)
+cd -
 
 print_info "Completed running "$FUNCNAME""
 }
