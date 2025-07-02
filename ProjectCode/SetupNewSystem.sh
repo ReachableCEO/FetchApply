@@ -179,8 +179,8 @@ fonts-powerline \
 webmin \
 usermin \
 iotop \
+ntpsec \
 ntpsec-ntpdate \
-ntpsec-ntp \
 tuned \
 cockpit \
 iptables \
