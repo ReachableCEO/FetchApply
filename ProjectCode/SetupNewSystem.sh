@@ -80,9 +80,9 @@ function global-systemServiceConfigurationFiles()
 print_info "Now running "$FUNCNAME"...."
 
 
-curl --silent ${DL_ROOT}/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
-curl --silent ${DL_ROOT}/ConfigFiles/SMTP/aliases > /etc/aliases 
-curl --silent ${DL_ROOT}/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases > /etc/aliases 
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
 
 export ROOT_SSH_DIR="/root/.ssh"
 export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
@@ -92,7 +92,7 @@ if [ ! -d $ROOT_SSH_DIR ]; then
   mkdir /root/.ssh/ 
 fi 
 
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
 chmod 400 /root/.ssh/authorized_keys 
 chown root: /root/.ssh/authorized_keys
 
@@ -102,7 +102,7 @@ if [ "$LOCALUSER_CHECK" -gt 0 ]; then
      mkdir -p /home/localuser/.ssh/
   fi
 
- curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+ curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -112,7 +112,7 @@ if [ ! -d $SUBODEV_SSH_DIR ]; then
   mkdir /home/subodev/.ssh/ 
 fi
 
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
 
@@ -270,7 +270,7 @@ systemctl --now enable auditd
 
 systemctl stop postfix
 
-curl --silent ${DL_ROOT}/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/postfix_generic> /etc/postfix/generic
 postmap /etc/postfix/generic
 
 postconf -e "inet_protocols = ipv4" 
@@ -297,7 +297,7 @@ fi
 
 ###Post package deployment bits
 
-curl --silent ${DL_ROOT}/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/DHCP/dhclient.conf > /etc/dhcp/dhclient.conf
 
 systemctl stop snmpd  && /etc/init.d/snmpd stop
 
