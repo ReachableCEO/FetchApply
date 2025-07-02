@@ -186,6 +186,7 @@ cockpit \
 iptables \
 netfilter-persistent \
 iptables-persistent \
+pflogsumm \
 postfix 
 
 export KALI_CHECK
