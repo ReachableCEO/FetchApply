@@ -59,7 +59,7 @@ cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
 #Don't deploy this config to a ubuntu server, it breaks openssh server. Works on kali/debian.
 
 export UBUNTU_CHECK
-UBUNTU_CHECK="$(distro | grep -c Ubuntu)" 
+UBUNTU_CHECK="$(distro | grep -c Ubuntu||true)"
 
 if [ "$UBUNTU_CHECK" -ne 1 ]; then
   cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf >/etc/ssh/sshd_config.d/ssh-audit_hardening.conf
