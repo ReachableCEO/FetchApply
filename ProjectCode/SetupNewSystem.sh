@@ -231,7 +231,7 @@ if [ "$KALI_CHECK" = 0 ]; then
 
 export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpdate \
-  ntp
+  ntp \
   ntpsec
 fi
 
