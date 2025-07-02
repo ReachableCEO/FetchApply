@@ -86,9 +86,14 @@ curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases > /etc/aliases 
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
 
-export ROOT_SSH_DIR="/root/.ssh"
-export LOCALUSER_SSH_DIR="/home/localuser/.ssh"
-export SUBODEV_SSH_DIR="/home/subodev/.ssh"
+export ROOT_SSH_DIR
+ROOT_SSH_DIR="/root/.ssh"
+
+export LOCALUSER_SSH_DIR
+LOCALUSER_SSH_DIR="/home/localuser/.ssh"
+
+export SUBODEV_SSH_DIR
+SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 if [ ! -d $ROOT_SSH_DIR ]; then 
   mkdir /root/.ssh/ 

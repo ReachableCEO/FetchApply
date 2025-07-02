@@ -26,17 +26,15 @@ done
 unset IFS
 
 
-if [[ ProjectIncludes = 1 ]]; then
 ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
 IFS=$'\n\t'
 for file in ${ProjectIncludeFiles[@]}; do
 	. "$file"
 done
 unset IFS
-fi
 
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent ${DL_ROOT}/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 # Perms on sshd_config 
 chmod og-rwx /etc/ssh/sshd_config
