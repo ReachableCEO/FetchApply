@@ -1,24 +1,14 @@
 #!/bin/bash
 
-#Framework variables are read from hee
-source "$FRAMEWORK_CONFIGS_FULL_PATH"/FrameworkVars
 
-#Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none "$FRAMEWORK_INCLUDES_FULL_PATH"/*)"
-
-IFS=$'\n\t'
-for file in "${FrameworkIncludeFiles[@]}"; do
-	. "$file"
+for framework_include_file in ../../../Framework-Includes/*; do
+  source "$framework_include_file"
 done
-unset IFS
 
-
-ProjectIncludeFiles="$(ls -1 --color=none "$PROJECT_INCLUDES_FULL_PATH"/*)"
-IFS=$'\n\t'
-for file in "${ProjectIncludeFiles[@]}"; do
-	. "$file"
+for project_include_file in ../../../Project-Includes/*; do
+  source "$project_include_file"
 done
-unset IFS
+
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd|grep -c subodev || true)"
