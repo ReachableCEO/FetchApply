@@ -24,7 +24,7 @@ export SUBODEV_SSH_DIR
 SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 export NOT_UBUNTU_CHECK
-NOT_UBUNTU_CHECK="$(distro | grep -c -v Ubuntu)"
+NOT_UBUNTU_CHECK="$(distro | grep -c -v Ubuntu || true)" 
 
 if [ ! -d $ROOT_SSH_DIR ]; then
   mkdir /root/.ssh/
