@@ -332,7 +332,7 @@ systemctl stop rsyslog
 systemctl start rsyslog
 
 if [ "$KALI_CHECK" = 0 ]; then
-  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
+  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntpsec.service
 fi
 
