@@ -55,14 +55,15 @@ if [ "$LOCALUSER_CHECK" -gt 0 ]; then
 fi
 
 if [ "$SUBODEV_CHECK" = 1 ]; then
+
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
   mkdir /home/subodev/.ssh/ 
-fi
 fi
 
 curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
+fi
 
 cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
 
