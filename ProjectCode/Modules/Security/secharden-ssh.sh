@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 export framework_include_file
 framework_include_file=""
 
