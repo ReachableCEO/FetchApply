@@ -33,6 +33,8 @@ for file in ${ProjectIncludeFiles[@]}; do
 done
 unset IFS
 
+echo $PWD
+
 cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
 cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
