@@ -8,23 +8,16 @@ export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../)"
 
 #Framework variables are read from hee
-source $PROJECT_ROOT_PATH/Framework-Includes/FrameworkVars
+source $PROJECT_ROOT_PATH/Framework-ConfigFiles/FrameworkVars
 
-#Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none ../Framework-Includes/*)"
 
-IFS=$'\n\t'
-for file in "${FrameworkIncludeFiles[@]}"; do
-	source "$file"
+for framework_include_file in ../Framework-Includes/*; do
+	source "$framework_include_file"
 done
-unset IFS
 
-ProjectIncludeFiles="$(ls -1 --color=none ../Project-Includes/*)"
-IFS=$'\n\t'
-for file in "${ProjectIncludeFiles[@]}"; do
-	source "$file"
+for project_include_file in ../Project-Includes/*; do
+	source "$project_include_file"
 done
-unset IFS
 
 # Start actual script logic here...
 
