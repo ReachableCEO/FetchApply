@@ -20,16 +20,16 @@ source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
 FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/*)"
 
 IFS=$'\n\t'
-for file in ${FrameworkIncludeFiles[@]}; do
-	. "$file"
+for file in "${FrameworkIncludeFiles[@]}"; do
+	source "$file"
 done
 unset IFS
 
 
 ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
 IFS=$'\n\t'
-for file in ${ProjectIncludeFiles[@]}; do
-	. "$file"
+for file in "${ProjectIncludeFiles[@]}"; do
+	source "$file"
 done
 unset IFS
 
@@ -104,7 +104,11 @@ curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/BANNERS/issue.net > /etc/issue.
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/BANNERS/motd > /etc/motd
 
 #Cron perms
+
+if [ -f /etc/cron.deny ]; then
 rm /etc/cron.deny || true
+fi
+
 touch /etc/cron.allow
 chmod g-wx,o-rwx /etc/cron.allow
 chown root:root /etc/cron.allow
