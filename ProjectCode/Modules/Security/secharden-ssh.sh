@@ -65,11 +65,11 @@ UBUNTU_CHECK="$(distro | grep -c Ubuntu)"
 
 if [ "$UBUNTU_CHECK" -ne 1 ]; then
   cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf >/etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+  chmod og-rwx /etc/ssh/sshd_config.d/*
 fi
 
 # Perms on sshd_config
 chmod og-rwx /etc/ssh/sshd_config
-chmod og-rwx /etc/ssh/sshd_config.d/*
 
 #todo
 
