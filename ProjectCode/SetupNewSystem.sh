@@ -44,6 +44,8 @@ unset IFS
 #Global variables
 #################
 
+apt-get -y install git sudo dmidecode curl
+
 export IS_PHYSICAL_HOST
 IS_PHYSICAL_HOST="$(/usr/sbin/dmidecode -t System|grep -c Dell ||true)"
 
