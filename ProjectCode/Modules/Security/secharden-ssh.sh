@@ -1,21 +1,21 @@
 #!/bin/bash
 
 #Framework variables are read from hee
-source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
+source "$FRAMEWORK_CONFIGS_FULL_PATH"/FrameworkVars
 
 #Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none $FRAMEWORK_INCLUDES_FULL_PATH/*)"
+FrameworkIncludeFiles="$(ls -1 --color=none "$FRAMEWORK_INCLUDES_FULL_PATH"/*)"
 
 IFS=$'\n\t'
-for file in ${FrameworkIncludeFiles[@]}; do
+for file in "${FrameworkIncludeFiles[@]}"; do
 	. "$file"
 done
 unset IFS
 
 
-ProjectIncludeFiles="$(ls -1 --color=none $PROJECT_INCLUDES_FULL_PATH/*)"
+ProjectIncludeFiles="$(ls -1 --color=none "$PROJECT_INCLUDES_FULL_PATH"/*)"
 IFS=$'\n\t'
-for file in ${ProjectIncludeFiles[@]}; do
+for file in "${ProjectIncludeFiles[@]}"; do
 	. "$file"
 done
 unset IFS
@@ -39,7 +39,7 @@ if [ ! -d $ROOT_SSH_DIR ]; then
   mkdir /root/.ssh/ 
 fi 
 
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
+curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
 chmod 400 /root/.ssh/authorized_keys 
 chown root: /root/.ssh/authorized_keys
 
@@ -49,7 +49,7 @@ if [ "$LOCALUSER_CHECK" -gt 0 ]; then
      mkdir -p /home/localuser/.ssh/
   fi
 
- curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
+ curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
   && chown localuser /home/localuser/.ssh/authorized_keys \
   && chmod 400 /home/localuser/.ssh/authorized_keys
 fi
@@ -60,12 +60,20 @@ if [ ! -d $SUBODEV_SSH_DIR ]; then
 fi
 fi
 
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
+curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
 && chmod 400 /home/subodev/.ssh/authorized_keys \
 && chown subodev: /home/subodev/.ssh/authorized_keys
 
 cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
+
+export UBUNTU_CHECK
+UBUNTU_CHECK="$(distro|grep -c Ubuntu)"
+
+#Don't deploy this config to a ubuntu server, it breaks openssh server. Works on kali/debian. 
+
+if [ $UBUNTU_CHECK -eq 0 ]; then
 cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+fi
 
 # Perms on sshd_config 
 chmod og-rwx /etc/ssh/sshd_config
