@@ -179,6 +179,8 @@ fonts-powerline \
 webmin \
 usermin \
 iotop \
+ntpsec-ntpdate \
+ntpsec-ntp \
 tuned \
 cockpit \
 iptables \
@@ -189,20 +191,6 @@ postfix
 export KALI_CHECK
 KALI_CHECK="$(distro |grep -c kali ||true)"
 
-if [ "$KALI_CHECK" = 0 ]; then
-
-export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
-  ntpdate \
-  ntp \
-  ntpsec
-fi
-
-if [ "$KALI_CHECK" = 1 ]; then
-export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
-  ntpsec-ntpdate \
-  ntpsec
-fi
-
 export VIRT_TYPE
 VIRT_TYPE="$(virt-what)"
 
@@ -212,12 +200,9 @@ IS_VIRT_GUEST="$(echo "$VIRT_TYPE"|egrep -c 'hyperv|kvm' ||true )"
 export IS_KVM_GUEST
 IS_KVM_GUEST="$(echo "$VIRT_TYPE"|grep -c 'kvm' || true)"
 
-
-
 if [[ $IS_KVM_GUEST = 1 ]]; then
   apt -y install qemu-guest-agent
 fi
-
 
 if [[ $IS_PHYSICAL_HOST -gt 0 ]]; then
 export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
