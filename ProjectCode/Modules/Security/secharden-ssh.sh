@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 for framework_include_file in ../../../Framework-Includes/*; do
   source "$framework_include_file"
 done
