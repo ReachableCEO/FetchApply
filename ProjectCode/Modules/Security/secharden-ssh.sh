@@ -58,8 +58,6 @@ cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
 
 #Don't deploy this config to a ubuntu server, it breaks openssh server. Works on kali/debian.
 
-set -x
-
 export UBUNTU_CHECK
 UBUNTU_CHECK="$(distro | grep -c Ubuntu)" 
 
