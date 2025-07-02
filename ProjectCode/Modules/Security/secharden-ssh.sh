@@ -42,5 +42,4 @@ chmod og-rwx /etc/ssh/sshd_config.d/*
 
 #todo
 
-# root login disabled
-# only strong mAC algos are used
+# only strong MAC algos are used
