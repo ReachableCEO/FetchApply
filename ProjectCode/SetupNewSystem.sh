@@ -87,8 +87,6 @@ curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases > /etc/aliases
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
 
 
-fi 
-
 newaliases
 
 print_info "Completed running "$FUNCNAME""
