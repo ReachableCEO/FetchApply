@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export framework_include_file
+framework_include_file=""
+
+export project_include_file
+project_include_file=""
 
 for framework_include_file in ../../../Framework-Includes/*; do
   source "$framework_include_file"
