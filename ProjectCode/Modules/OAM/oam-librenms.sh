@@ -46,7 +46,7 @@ cat ../../Agents/librenms/ntp-client.sh > /usr/lib/check_mk_agent/local/ntp-clie
 cat ../../Agents/librenms/ntp-server.sh > /usr/lib/check_mk_agent/local/ntp-server.sh
 cat ../../Agents/librenms/os-updates.sh > /usr/lib/check_mk_agent/local/os-updates.sh
 cat ../../Agents/librenms/postfixdetailed.sh > /usr/lib/check_mk_agent/local/postfixdetailed.sh
-#cat ../../Agents/librenms/postfix-queues.sh > /usr/local/check_mk_agent/local/postfix_queues.sh
+cat ../../Agents/librenms/postfix-queue.sh > /usr/local/check_mk_agent/local/postfix_queue.sh
 cat ../../Agents/librenms/smart > /usr/lib/check_mk_agent/local/smart
 cat ../../Agents/librenms/smart.config > /usr/lib/check_mk_agent/local/smart.config
 
