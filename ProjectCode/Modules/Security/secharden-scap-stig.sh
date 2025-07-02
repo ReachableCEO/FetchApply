@@ -5,12 +5,12 @@ source $PROJECT_ROOT_PATH/Framework-Includes/FrameworkVars
 
 #Boilerplate and support functions
 
-for framework_include_file in ./Framework-Includes/*; do
+for framework_include_file in ../Framework-Includes/*; do
 	source "$framework_include_file"
 done
 unset IFS
 
-for project_include_file in ./Project-Includes/*; do
+for project_include_file in ../Project-Includes/*; do
 	source "$project_include_file"
 done
 unset IFS
