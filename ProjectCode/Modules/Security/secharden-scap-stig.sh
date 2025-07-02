@@ -60,7 +60,7 @@ fi
 
 #disable auto mounting
 systemctl --now disable autofs  || true
-apt purge autofs || true
+apt-get -y --purge remove autofs || true
 
 #disable usb storage
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/usb_storage.conf > /etc/modprobe.d/usb_storage.conf 
