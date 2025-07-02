@@ -45,7 +45,7 @@ unset IFS
 #################
 
 export IS_PHYSICAL_HOST
-IS_PHYSICAL_HOST="$(dmidecode -t System|grep -c Dell ||true)"
+IS_PHYSICAL_HOST="$(/usr/sbin/dmidecode -t System|grep -c Dell ||true)"
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd|grep -c subodev || true)"
