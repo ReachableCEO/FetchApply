@@ -232,6 +232,7 @@ if [ "$KALI_CHECK" = 0 ]; then
 export DEBIAN_FRONTEND="noninteractive" ; apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
   ntpdate \
   ntp
+  ntpsec
 fi
 
 if [ "$KALI_CHECK" = 1 ]; then
@@ -332,7 +333,7 @@ systemctl start rsyslog
 
 if [ "$KALI_CHECK" = 0 ]; then
   cat ./ConfigFiles/NTP/ntp.conf > /etc/ntp.conf
-  systemctl restart ntp 
+  systemctl restart ntpsec.service
 fi
 
 if [ "$KALI_CHECK" = 1 ]; then
