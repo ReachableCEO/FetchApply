@@ -7,33 +7,21 @@
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../)"
 
-export FRAMEWORK_INCLUDES_FULL_PATH
-FRAMEWORK_INCLUDES_FULL_PATH="$(realpath ../Framework-Includes)"
-
-export FRAMEWORK_CONFIGS_FULL_PATH
-FRAMEWORK_CONFIGS_FULL_PATH="$(realpath ../Framework-ConfigFiles)"
-
-export PROJECT_INCLUDES_FULL_PATH
-PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-Includes)"
-
-export PROJECT_CONGIGS_FULL_PATH
-PROJECT_INCLUDES_FULL_PATH="$(realpath ../Project-ConfigFiles)"
-
 #Framework variables are read from hee
-source $FRAMEWORK_CONFIGS_FULL_PATH/FrameworkVars
+source $PROJECT_ROOT_PATH/Framework-Includes/FrameworkVars
 
 #Boilerplate and support functions
 FrameworkIncludeFiles="$(ls -1 --color=none ../Framework-Includes/*)"
 
 IFS=$'\n\t'
-for file in ${FrameworkIncludeFiles[@]}; do
+for file in "${FrameworkIncludeFiles[@]}"; do
 	source "$file"
 done
 unset IFS
 
 ProjectIncludeFiles="$(ls -1 --color=none ../Project-Includes/*)"
 IFS=$'\n\t'
-for file in ${ProjectIncludeFiles[@]}; do
+for file in "${ProjectIncludeFiles[@]}"; do
 	source "$file"
 done
 unset IFS
