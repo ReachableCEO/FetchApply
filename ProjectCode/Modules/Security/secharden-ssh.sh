@@ -33,8 +33,8 @@ for file in ${ProjectIncludeFiles[@]}; do
 done
 unset IFS
 
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+cat ../ConfigFiles/SSH/Configs/tsys-sshd-config > /etc/ssh/sshd_config
+cat ../ConfigFiles/SSH/Configs/ssh-audit_hardening.conf > /etc/ssh/sshd_config.d/ssh-audit_hardening.conf
 
 # Perms on sshd_config 
 chmod og-rwx /etc/ssh/sshd_config
