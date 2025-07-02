@@ -86,42 +86,6 @@ curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc > /etc/zshrc
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases > /etc/aliases 
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/Syslog/rsyslog.conf > /etc/rsyslog.conf
 
-export ROOT_SSH_DIR
-ROOT_SSH_DIR="/root/.ssh"
-
-export LOCALUSER_SSH_DIR
-LOCALUSER_SSH_DIR="/home/localuser/.ssh"
-
-export SUBODEV_SSH_DIR
-SUBODEV_SSH_DIR="/home/subodev/.ssh"
-
-if [ ! -d $ROOT_SSH_DIR ]; then 
-  mkdir /root/.ssh/ 
-fi 
-
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys > /root/.ssh/authorized_keys 
-chmod 400 /root/.ssh/authorized_keys 
-chown root: /root/.ssh/authorized_keys
-
-
-if [ "$LOCALUSER_CHECK" -gt 0 ]; then
-  if [ ! -d $LOCALUSER_SSH_DIR ]; then 
-     mkdir -p /home/localuser/.ssh/
-  fi
-
- curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/localuser/.ssh/authorized_keys \
-  && chown localuser /home/localuser/.ssh/authorized_keys \
-  && chmod 400 /home/localuser/.ssh/authorized_keys
-fi
-
-if [ "$SUBODEV_CHECK" = 1 ]; then
-if [ ! -d $SUBODEV_SSH_DIR ]; then 
-  mkdir /home/subodev/.ssh/ 
-fi
-
-curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
-&& chmod 400 /home/subodev/.ssh/authorized_keys \
-&& chown subodev: /home/subodev/.ssh/authorized_keys
 
 fi 
 
