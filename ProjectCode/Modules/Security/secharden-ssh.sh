@@ -20,6 +20,12 @@ for file in ${ProjectIncludeFiles[@]}; do
 done
 unset IFS
 
+export SUBODEV_CHECK
+SUBODEV_CHECK="$(getent passwd|grep -c subodev || true)"
+
+export LOCALUSER_CHECK
+LOCALUSER_CHECK="$(getent passwd|grep -c localuser || true)"
+
 export ROOT_SSH_DIR
 ROOT_SSH_DIR="/root/.ssh"
 
@@ -51,6 +57,7 @@ fi
 if [ "$SUBODEV_CHECK" = 1 ]; then
 if [ ! -d $SUBODEV_SSH_DIR ]; then 
   mkdir /home/subodev/.ssh/ 
+fi
 fi
 
 curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys > /home/subodev/.ssh/authorized_keys \
