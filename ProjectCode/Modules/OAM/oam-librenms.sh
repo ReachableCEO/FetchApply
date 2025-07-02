@@ -49,7 +49,7 @@ cat ../../Agents/librenms/dpkg.sh > /usr/lib/check_mk_agent/local/dpkg.sh
 cat ../../Agents/librenms/ntp-client.sh > /usr/lib/check_mk_agent/local/ntp-client.sh
 #cat ../../Agents/librenms/ntp-server.sh > /usr/lib/check_mk_agent/local/ntp-server.sh
 cat ../../Agents/librenms/os-updates.sh > /usr/lib/check_mk_agent/local/os-updates.sh
-cat ../../Agents/librenms/postfixdetailed.sh > /usr/lib/check_mk_agent/local/postfix-detailed.sh
+cat ../../Agents/librenms/postfix-detailed.sh > /usr/lib/check_mk_agent/local/postfix-detailed.sh
 cat ../../Agents/librenms/postfix-queue.sh > /usr/local/check_mk_agent/local/postfix_queue.sh
 #cat ../../Agents/librenms/smart.sh > /usr/lib/check_mk_agent/local/smart
 #cat ../../Agents/librenms/smart.sh.config > /usr/lib/check_mk_agent/local/smart.config
