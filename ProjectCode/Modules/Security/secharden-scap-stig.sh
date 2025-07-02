@@ -84,24 +84,24 @@ systemctl --now disable autofs  || true
 apt purge autofs || true
 
 #disable usb storage
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/usb_storage.conf > /etc/modprobe.d/usb_storage.conf 
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/dccp.conf > /etc/modprobe.d/dccp.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/rds.conf > /etc/modprobe.d/rds.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/sctp.conf > /etc/modprobe.d/sctp.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/tipc.conf > /etc/modprobe.d/tipc.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/cramfs.conf > /etc/modprobe.d/cramfs.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/freevxfs.conf > /etc/modprobe.d/freevxfs.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/hfs.conf > /etc/modprobe.d/hfs.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/hfsplus.conf > /etc/modprobe.d/hfsplus.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/jffs2.conf > /etc/modprobe.d/jffs2.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/squashfs.conf > /etc/modprobe.d/squashfs.conf
-curl --silent ${DL_ROOT}/ConfigFiles/ModProbe/udf.conf > /etc/modprobe.d/udf.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/usb_storage.conf > /etc/modprobe.d/usb_storage.conf 
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/dccp.conf > /etc/modprobe.d/dccp.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/rds.conf > /etc/modprobe.d/rds.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/sctp.conf > /etc/modprobe.d/sctp.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/tipc.conf > /etc/modprobe.d/tipc.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/cramfs.conf > /etc/modprobe.d/cramfs.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/freevxfs.conf > /etc/modprobe.d/freevxfs.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/hfs.conf > /etc/modprobe.d/hfs.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/hfsplus.conf > /etc/modprobe.d/hfsplus.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/jffs2.conf > /etc/modprobe.d/jffs2.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/squashfs.conf > /etc/modprobe.d/squashfs.conf
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ModProbe/udf.conf > /etc/modprobe.d/udf.conf
 
 #banners
 
-curl --silent ${DL_ROOT}/ConfigFiles/BANNERS/issue > /etc/issue
-curl --silent ${DL_ROOT}/ConfigFiles/BANNERS/issue.net > /etc/issue.net
-curl --silent ${DL_ROOT}/ConfigFiles/BANNERS/motd > /etc/motd
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/BANNERS/issue > /etc/issue
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/BANNERS/issue.net > /etc/issue.net
+curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/BANNERS/motd > /etc/motd
 
 #Cron perms
 rm /etc/cron.deny || true
