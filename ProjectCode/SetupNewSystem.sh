@@ -235,15 +235,15 @@ function global-postPackageConfiguration() {
   pi-detect
 
   if [ "$IS_RASPI" = 1 ]; then
-    cat ./ConfigFiles/SNMP/snmpd-rpi.conf >/etc/snmp/snmpd.conf
+    cat ./ConfigFiles/SNMP/snmpd-rpi.conf >/etc/snmp/snmpd.conf || true
   fi
 
   if [ "$IS_PHYSICAL_HOST" = 1 ]; then
-    cat ./ConfigFiles/SNMP/snmpd-physicalhost.conf >/etc/snmp/snmpd.conf
+    cat ./ConfigFiles/SNMP/snmpd-physicalhost.conf >/etc/snmp/snmpd.conf || true
   fi
 
   if [ "$IS_VIRT_GUEST" = 1 ]; then
-    cat ./ConfigFiles/SNMP/snmpd.conf >/etc/snmp/snmpd.conf
+    cat ./ConfigFiles/SNMP/snmpd.conf >/etc/snmp/snmpd.conf || true
   fi
 
   systemctl daemon-reload && systemctl restart snmpd && /etc/init.d/snmpd restart
