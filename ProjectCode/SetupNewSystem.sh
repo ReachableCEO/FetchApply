@@ -253,7 +253,7 @@ function global-postPackageConfiguration() {
 
 
 export NTP_SERVER_CHECK
-NTP_SERVER_CHECK="$(hostname |grep -c pfvsvrpi ||true)"
+NTP_SERVER_CHECK="$(hostname |egrep -c 'pfv-netboot|pfvsvrpi' ||true)"
 
 if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
 
