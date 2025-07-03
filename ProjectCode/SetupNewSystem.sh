@@ -97,7 +97,7 @@ function global-installPackages() {
 
   #Remove stuff we don't want
 
-  apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
+  apt-get --yes --purge remove ntp ntpdate systemd-timesyncd chrony telnet inetutils-telnet
 
   #export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
 
@@ -251,15 +251,8 @@ function global-postPackageConfiguration() {
   systemctl stop rsyslog
   systemctl start rsyslog
 
-  if [ "$KALI_CHECK" = 0 ]; then
-    cat ./ConfigFiles/NTP/ntp.conf >/etc/ntpsec/ntp.conf
-    systemctl restart ntpsec.service
-  fi
-
-  if [ "$KALI_CHECK" = 1 ]; then
-    cat ./ConfigFiles/NTP/ntp.conf >/etc/ntpsec/ntp.conf
-    systemctl restart ntpsec.service
-  fi
+  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
+  systemctl restart ntpsec.service
 
   systemctl stop postfix
   systemctl start postfix
