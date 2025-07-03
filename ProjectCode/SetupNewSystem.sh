@@ -251,8 +251,16 @@ function global-postPackageConfiguration() {
   systemctl stop rsyslog
   systemctl start rsyslog
 
+
+export NTP_SERVER_CHECK
+NTP_SERVER_CHECK="$(hostname |grep -c pfvsvrpi ||true)"
+
+if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
+
   cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntpsec.service
+
+fi
 
   systemctl stop postfix
   systemctl start postfix
