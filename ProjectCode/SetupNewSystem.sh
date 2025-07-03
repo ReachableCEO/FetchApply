@@ -257,6 +257,7 @@ NTP_SERVER_CHECK="$(hostname |grep -c pfvsvrpi ||true)"
 
 if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
 
+  print_info "Not updating NTP config, this is the TSYS Stratum1 NTP server..."
   cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
   systemctl restart ntpsec.service
 
