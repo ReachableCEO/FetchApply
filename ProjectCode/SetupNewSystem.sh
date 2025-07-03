@@ -249,7 +249,7 @@ function global-postPackageConfiguration() {
   systemctl daemon-reload && systemctl restart snmpd && /etc/init.d/snmpd restart
 
   cat ./ConfigFiles/NetworkDiscovery/lldpd > /etc/default/lldpd 
-  systemct restart lldpd
+  systemctl restart lldpd
 
   systemctl stop rsyslog
   systemctl start rsyslog
