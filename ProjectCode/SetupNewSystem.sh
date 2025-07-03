@@ -97,7 +97,7 @@ function global-installPackages() {
 
   #Remove stuff we don't want
 
-  apt-get --yes --purge remove ntp ntpdate systemd-timesyncd chrony telnet inetutils-telnet
+  apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
 
   #export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
 
