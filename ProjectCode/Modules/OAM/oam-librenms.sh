@@ -46,7 +46,7 @@ systemctl start check_mk.socket
 cat ../../Agents/librenms/dmi.sh > /usr/lib/check_mk_agent/local/dmi.sh
 cat ../../Agents/librenms/dpkg.sh > /usr/lib/check_mk_agent/local/dpkg.sh
 #cat ../../Agents/librenms/mysql.sh > /usr/lib/check_mk_agent/local/mysql.sh
-cat ../../Agents/librenms/ntp-client.sh > /usr/lib/check_mk_agent/local/ntp-client.sh
+cat ../../Agents/librenms/ntp-client > /usr/lib/check_mk_agent/local/ntp-client
 #cat ../../Agents/librenms/ntp-server.sh > /usr/lib/check_mk_agent/local/ntp-server.sh
 cat ../../Agents/librenms/os-updates.sh > /usr/lib/check_mk_agent/local/os-updates.sh
 cat ../../Agents/librenms/postfixdetailed > /usr/lib/check_mk_agent/local/postfixdetailed
