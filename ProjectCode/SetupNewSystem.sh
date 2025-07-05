@@ -97,7 +97,16 @@ function global-installPackages() {
 
   #Remove stuff we don't want
 
-  apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
+  export UBUNTU_CHECK
+  UBUNTU_CHECK="$(distro | grep -c Ubuntu || true)"
+
+  if [ "$UBUNTU_CHECK" -eq 1 ]; then
+    apt-get --yes --purge remove chrony telnet inetutils-telnet
+  fi
+
+  if [ "$UBUNTU_CHECK" -eq 0 ]; then
+    apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
+  fi
 
   #export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
 
@@ -248,23 +257,22 @@ function global-postPackageConfiguration() {
 
   systemctl daemon-reload && systemctl restart snmpd && /etc/init.d/snmpd restart
 
-  cat ./ConfigFiles/NetworkDiscovery/lldpd > /etc/default/lldpd 
+  cat ./ConfigFiles/NetworkDiscovery/lldpd >/etc/default/lldpd
   systemctl restart lldpd
 
   systemctl stop rsyslog
   systemctl start rsyslog
 
+  export NTP_SERVER_CHECK
+  NTP_SERVER_CHECK="$(hostname | egrep -c 'pfv-netboot|pfvsvrpi' || true)"
 
-export NTP_SERVER_CHECK
-NTP_SERVER_CHECK="$(hostname |egrep -c 'pfv-netboot|pfvsvrpi' ||true)"
+  if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
 
-if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
+    print_info "Not updating NTP config, this is the TSYS Stratum1 NTP server..."
+    cat ./ConfigFiles/NTP/ntp.conf >/etc/ntpsec/ntp.conf
+    systemctl restart ntpsec.service
 
-  print_info "Not updating NTP config, this is the TSYS Stratum1 NTP server..."
-  cat ./ConfigFiles/NTP/ntp.conf > /etc/ntpsec/ntp.conf
-  systemctl restart ntpsec.service
-
-fi
+  fi
 
   systemctl stop postfix
   systemctl start postfix
