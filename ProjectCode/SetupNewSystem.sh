@@ -118,6 +118,7 @@ function global-installPackages() {
     virt-what \
     auditd \
     audispd-plugins \
+    cloud-guest-utils \
     aide \
     htop \
     dstat \
