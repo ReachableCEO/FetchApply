@@ -124,6 +124,7 @@ function global-installPackages() {
     dstat \
     snmpd \
     ncdu \
+    latencytop \
     iftop \
     acct \
     nethogs \
