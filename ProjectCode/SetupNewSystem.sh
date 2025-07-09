@@ -124,12 +124,13 @@ function global-installPackages() {
     dstat \
     snmpd \
     ncdu \
-    latencytop \
     iftop \
-    acct \
+    iotop \
+    latencytop \
     nethogs \
     sysstat \
     ngrep \
+    acct \
     lsb-release \
     screen \
     tailscale \
@@ -148,7 +149,6 @@ function global-installPackages() {
     mailutils \
     clamav \
     sl \
-    rsyslog \
     logwatch \
     git \
     net-tools \
@@ -162,7 +162,6 @@ function global-installPackages() {
     fonts-powerline \
     webmin \
     usermin \
-    iotop \
     ntpsec \
     ntpsec-ntpdate \
     tuned \
@@ -262,18 +261,22 @@ function global-postPackageConfiguration() {
   cat ./ConfigFiles/NetworkDiscovery/lldpd >/etc/default/lldpd
   systemctl restart lldpd
 
-  systemctl stop rsyslog
-  systemctl start rsyslog
+  export LIBRENMS_CHECK
+  LIBRENMS_CHECK="$(hostname | grep -c tsys-librenms || true)"
+
+  if [ "$LIBRENMS_CHECK" -eq 0 ]; then
+    DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install rsyslog
+    systemctl stop rsyslog
+    systemctl start rsyslog
+  fi
 
   export NTP_SERVER_CHECK
   NTP_SERVER_CHECK="$(hostname | egrep -c 'pfv-netboot|pfvsvrpi' || true)"
 
   if [ "$NTP_SERVER_CHECK" -eq 0 ]; then
 
-    print_info "Not updating NTP config, this is the TSYS Stratum1 NTP server..."
     cat ./ConfigFiles/NTP/ntp.conf >/etc/ntpsec/ntp.conf
     systemctl restart ntpsec.service
-
   fi
 
   systemctl stop postfix
