@@ -114,7 +114,8 @@ function global-installPackages() {
 
   print_info ""Now installing all the packages...""
 
-  DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+  #DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+  apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
     virt-what \
     auditd \
     audispd-plugins \
