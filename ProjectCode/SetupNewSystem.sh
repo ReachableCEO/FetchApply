@@ -56,7 +56,7 @@ function global-oam() {
 }
 
 function global-systemServiceConfigurationFiles() {
-  print_info "Now running" $FUNCNAME...."
+  print_info "Now running" $FUNCNAME....""
 
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc >/etc/zshrc
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases >/etc/aliases
@@ -68,7 +68,7 @@ function global-systemServiceConfigurationFiles() {
 }
 
 function global-installPackages() {
-  print_info "Now running "$FUNCNAME"....""
+  print_info "Now running "$FUNCNAME"...."""
 
   # Setup webmin repo, used for RBAC/2fa PAM
 
