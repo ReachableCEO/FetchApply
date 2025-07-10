@@ -43,7 +43,7 @@ DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"
 #######################
 
 function global-oam() {
-  print_info "Now running "$FUNCNAME"...."
+  print_info "Now running $FUNCNAME...."
 
   cat ./scripts/up2date.sh >/usr/local/bin/up2date.sh && chmod +x /usr/local/bin/up2date.sh
 
@@ -51,12 +51,12 @@ function global-oam() {
   bash ./oam-librenms.sh
   cd - || exit
 
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 
 }
 
 function global-systemServiceConfigurationFiles() {
-  print_info "Now running" $FUNCNAME....""
+  print_info "Now running $FUNCNAME...."
 
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc >/etc/zshrc
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases >/etc/aliases
@@ -64,11 +64,11 @@ function global-systemServiceConfigurationFiles() {
 
   newaliases
 
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function global-installPackages() {
-  print_info "Now running "$FUNCNAME"...."""
+  print_info "Now running $FUNCNAME...."
 
   # Setup webmin repo, used for RBAC/2fa PAM
 
@@ -207,12 +207,20 @@ function global-installPackages() {
   # power-profiles-daemon
   fi
 
-  print_info "Completed running "$FUNCNAME""
+############################
+# Secrets agents
+############################
+
+# bitwarden cli
+
+# vault cli
+
+  print_info "Completed running $FUNCNAME"
 }
 
 function global-postPackageConfiguration() {
 
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
 
   systemctl --now enable auditd
 
@@ -310,7 +318,7 @@ function global-postPackageConfiguration() {
     tuned-adm profile virtual-guest
   fi
 
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 ####################################################################################################
@@ -324,43 +332,43 @@ function global-postPackageConfiguration() {
 # SSH
 
 function secharden-ssh() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
 
   cd ./Modules/Security
   bash ./secharden-ssh.sh
   cd -
 
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function secharden-wazuh() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
   bash ./Modules/Security/secharden-wazuh.sh
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function secharden-auto-upgrades() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
   #curl --silent ${DL_ROOT}/Modules/Security/secharden-ssh.sh|$(which bash)
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function secharden-2fa() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
   #curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(which bash)
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function secharden-agents() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
   #curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 function secharden-scap-stig() {
-  print_info "Now running "$FUNCNAME""
+  print_info "Now running $FUNCNAME"
   bash ./Modules/Security/secharden-scap-stig.sh
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running $FUNCNAME"
 }
 
 ####################################################################################################
