@@ -279,6 +279,9 @@ function global-postPackageConfiguration() {
   cat ./ConfigFiles/NetworkDiscovery/lldpd >/etc/default/lldpd
   systemctl restart lldpd
 
+  cat ./ConfigFiles/Cockpit/disallowed-users >/etc/cockpit/disallowed-users
+  systemctl restart cockpit
+
   export LIBRENMS_CHECK
   LIBRENMS_CHECK="$(hostname | grep -c tsys-librenms || true)"
 
