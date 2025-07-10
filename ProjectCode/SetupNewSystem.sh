@@ -68,7 +68,7 @@ function global-systemServiceConfigurationFiles() {
 }
 
 function global-installPackages() {
-  print_info "Now running "$FUNCNAME"...."
+  print_info "Now running "$FUNCNAME"....""
 
   # Setup webmin repo, used for RBAC/2fa PAM
 
@@ -112,7 +112,7 @@ function global-installPackages() {
 
   # add stuff we want
 
-  print_info ""Now installing all the packages...""
+  print_info ""Now installing all the packages..."
 
   DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
     virt-what \
@@ -397,4 +397,4 @@ secharden-scap-stig
 #secharden-2fa
 #auth-cloudron-ldap
 
-print_info "Execution ended at $CURRENT_TIMESTAMP...""
+print_info "Execution ended at $CURRENT_TIMESTAMP..."
