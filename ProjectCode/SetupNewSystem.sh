@@ -112,7 +112,7 @@ function global-installPackages() {
 
   # add stuff we want
 
-  print_info ""Now installing all the packages..."
+  print_info ""Now installing all the packages...""
 
   DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
     virt-what \
