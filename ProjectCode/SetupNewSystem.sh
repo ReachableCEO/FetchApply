@@ -56,7 +56,7 @@ function global-oam() {
 }
 
 function global-systemServiceConfigurationFiles() {
-  print_info "Now running "$FUNCNAME"...."
+  print_info "Now running" $FUNCNAME...."
 
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/ZSH/tsys-zshrc >/etc/zshrc
   curl --silent ${DL_ROOT}/ProjectCode/ConfigFiles/SMTP/aliases >/etc/aliases
@@ -138,7 +138,6 @@ function global-installPackages() {
     cockpit-system \
     cockpit-tests \
     cockpit-ws \
-    cockpit-machines \
     nethogs \
     sysstat \
     ngrep \
@@ -398,4 +397,4 @@ secharden-scap-stig
 #secharden-2fa
 #auth-cloudron-ldap
 
-print_info "Execution ended at $CURRENT_TIMESTAMP..."
+print_info Execution ended at "$CURRENT_TIMESTAMP"...
