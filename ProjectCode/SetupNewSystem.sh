@@ -311,7 +311,7 @@ function global-postPackageConfiguration() {
     tuned-adm profile virtual-guest
   fi
 
-  print_info "Completed running "$FUNCNAME"
+  print_info "Completed running "$FUNCNAME""
 }
 
 ####################################################################################################
