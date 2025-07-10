@@ -127,6 +127,18 @@ function global-installPackages() {
     iftop \
     iotop \
     latencytop \
+    cockpit \
+    cockpit-bridge \
+    cockpit-doc \
+    cockpit-networkmanager \
+    cockpit-packagekit \
+    cockpit-pcp \
+    cockpit-sosreport \
+    cockpit-storaged \
+    cockpit-system \
+    cockpit-tests \
+    cockpit-ws \
+    cockpit-machines \
     nethogs \
     sysstat \
     ngrep \
