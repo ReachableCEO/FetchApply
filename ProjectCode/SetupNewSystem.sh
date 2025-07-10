@@ -397,4 +397,4 @@ secharden-scap-stig
 #secharden-2fa
 #auth-cloudron-ldap
 
-print_info Execution ended at "$CURRENT_TIMESTAMP"...
+print_info "Execution ended at $CURRENT_TIMESTAMP...""
