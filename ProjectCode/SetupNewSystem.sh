@@ -208,7 +208,7 @@ function global-installPackages() {
   # power-profiles-daemon
   fi
 
-  print_info "Completed running "$FUNCNAME""
+  print_info "Completed running "$FUNCNAME"
 }
 
 function global-postPackageConfiguration() {
