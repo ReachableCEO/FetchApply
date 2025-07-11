@@ -54,7 +54,7 @@ if [ "$SUBODEV_CHECK" = 1 ]; then
 fi
 
 export DEV_WORKSTATION_CHECK
-DEV_WORKSTATION_CHECK_CHECK="$(hostname | egrep -c 'subopi-dev|CharlesDevServer' || true)"
+DEV_WORKSTATION_CHECK="$(hostname | egrep -c 'subopi-dev|CharlesDevServer' || true)"
 
   if [ "$DEV_WORKSTATION_CHECK" -eq 0 ]; then
 
