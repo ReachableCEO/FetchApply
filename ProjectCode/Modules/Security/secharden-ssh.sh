@@ -53,7 +53,13 @@ if [ "$SUBODEV_CHECK" = 1 ]; then
     chown subodev: /home/subodev/.ssh/authorized_keys
 fi
 
+export DEV_WORKSTATION_CHECK
+DEV_WORKSTATION_CHECK_CHECK="$(hostname | egrep -c 'subopi-dev|CharlesDevServer' || true)"
+
+  if [ "$DEV_WORKSTATION_CHECK" -eq 0 ]; then
+
 cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
+fi
 
 
 #Don't deploy this config to a ubuntu server, it breaks openssh server. Works on kali/debian.
