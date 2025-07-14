@@ -1,8 +1,9 @@
 # Claude Code Review - TSYS FetchApply Infrastructure
 
-**Review Date:** July 12, 2025  
+**Review Date:** July 14, 2025 (Updated)  
 **Reviewed by:** Claude (Anthropic)  
 **Repository:** TSYS Group Infrastructure Provisioning Scripts  
+**Previous Review:** July 12, 2025  
 
 ## Project Overview
 
@@ -30,9 +31,9 @@ This repository contains infrastructure-as-code for provisioning Linux servers i
 ## Security Concerns ⚠️
 
 ### Critical Issues
-1. **Insecure Deployment Method:** Primary deployment via `curl https://dl.knownelement.com/KNEL/FetchApply/SetupNewSystem.sh | bash` presents significant security risks
+1. **~~Insecure Deployment Method~~** ✅ **RESOLVED:** Now uses `git clone` + local script execution instead of `curl | bash`
 2. **No Integrity Verification:** Downloaded scripts lack checksum validation or cryptographic signatures
-3. **HTTP Downloads:** Multiple scripts download from HTTP URLs (Dell OMSA packages, some repository setups)
+3. **~~HTTP Downloads~~** ✅ **RESOLVED:** All HTTP URLs converted to HTTPS (Dell OMSA, Proxmox, Apache sources)
 
 ### Moderate Risks
 4. **Exposed SSH Keys:** Public SSH keys committed directly to repository without rotation mechanism
@@ -42,8 +43,8 @@ This repository contains infrastructure-as-code for provisioning Linux servers i
 ## Improvement Recommendations 🔧
 
 ### High Priority (Security Critical)
-1. **Secure Deployment Pipeline:** Replace `curl | bash` with package-based deployment or signed script verification
-2. **HTTPS Enforcement:** Convert all HTTP downloads to HTTPS with certificate validation
+1. **~~Secure Deployment Pipeline~~** ✅ **RESOLVED:** Now uses git clone-based deployment
+2. **~~HTTPS Enforcement~~** ✅ **RESOLVED:** All HTTP downloads converted to HTTPS
 3. **Script Integrity:** Implement SHA256 checksum verification for all downloaded components
 4. **Secrets Management:** Deploy proper secrets handling for SSH keys and sensitive configurations
 
@@ -60,11 +61,25 @@ This repository contains infrastructure-as-code for provisioning Linux servers i
 
 ## Risk Assessment 📊
 
-**Overall Risk Level:** Medium-Low
+**Overall Risk Level:** Low-Medium ⬇️ (Reduced from Medium-Low)
 
-The repository contains well-architected defensive security tools with strong error handling and modular design. However, the deployment methodology and some insecure download practices present moderate security risks that should be addressed before production use in high-security environments.
+The repository contains well-architected defensive security tools with strong error handling and modular design. **Major security improvement:** The insecure `curl | bash` deployment method has been replaced with git-based deployment. Remaining concerns are primarily around hardening the provisioning scripts themselves rather than the deployment method.
 
-**Recommendation:** Address high-priority security issues before deploying to production systems. The codebase foundation is solid and requires primarily operational security improvements rather than architectural changes.
+**Recommendation:** Continue addressing remaining security issues (HTTPS enforcement, secrets management) but the critical deployment risk has been mitigated. The codebase is much safer for production use.
+
+## Update Summary (July 14, 2025)
+
+**✅ Resolved Issues:**
+- Insecure deployment method replaced with git clone approach
+- README.md updated with project management and community links
+- Deployment security risk significantly reduced
+- All HTTP URLs converted to HTTPS (Dell OMSA, Proxmox, Apache sources)
+
+**🔄 Remaining Priorities:**
+1. ~~HTTPS enforcement for internal downloads~~ ✅ **RESOLVED:** All HTTP URLs converted to HTTPS
+2. Secrets management implementation
+3. Script integrity verification
+4. SSH key rotation from repository
 
 ## Files Reviewed
 

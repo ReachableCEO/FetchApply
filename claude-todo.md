@@ -5,17 +5,17 @@
 
 ## 🚨 CRITICAL (Immediate Security Fixes)
 
-### TASK-001: Replace HTTP URLs with HTTPS
-**Files to modify:**
-- `ProjectCode/Dell/Server/omsa.sh:19-28` - Replace `http://archive.ubuntu.com` with `https://archive.ubuntu.com`
-- `ProjectCode/legacy/prox7.sh:3` - Replace `http://download.proxmox.com` with `https://download.proxmox.com`
+### ✅ RESOLVED: Secure Deployment Method
+**Previous Issue:** `curl | bash` deployment method  
+**Status:** Fixed in README.md - now uses `git clone` + local script execution
 
-**Implementation:**
-```bash
-# Search and replace HTTP URLs
-sed -i 's|http://archive.ubuntu.com|https://archive.ubuntu.com|g' ProjectCode/Dell/Server/omsa.sh
-sed -i 's|http://download.proxmox.com|https://download.proxmox.com|g' ProjectCode/legacy/prox7.sh
-```
+### ✅ RESOLVED: Replace HTTP URLs with HTTPS
+**Files modified:**
+- `ProjectCode/Dell/Server/omsa.sh` - Converted 11 HTTP URLs to HTTPS (Ubuntu archive, Dell repo)
+- `ProjectCode/legacy/prox7.sh` - Converted 2 HTTP URLs to HTTPS (Proxmox downloads)
+- `ProjectCode/Modules/RandD/sslStackFromSource.sh` - Converted 3 HTTP URLs to HTTPS (Apache sources)
+
+**Status:** All HTTP URLs in active scripts converted to HTTPS. Only remaining HTTP references are in comments and LibreNMS agent files (external dependencies).
 
 ### TASK-002: Add Download Integrity Verification
 **Create new function in:** `Framework-Includes/VerifyDownload.sh`
@@ -127,11 +127,14 @@ function update_status() { }        # Update current operation
 
 ## Implementation Order for Claude
 
-1. **Start with TASK-001** (simple find/replace operations)
+**Updated Priority After Security Fix (July 14, 2025):**
+1. **Start with TASK-001** (HTTPS enforcement - simple find/replace operations)
 2. **Create framework functions** (TASK-002, TASK-005, TASK-007)
 3. **Enhance existing modules** (TASK-004, TASK-006)
 4. **Add operational features** (TASK-008, TASK-009)
 5. **Improve user experience** (TASK-010, TASK-011, TASK-012)
+
+**Note:** Major deployment security risk resolved - remaining tasks focus on hardening internal operations.
 
 ## File Location Patterns
 

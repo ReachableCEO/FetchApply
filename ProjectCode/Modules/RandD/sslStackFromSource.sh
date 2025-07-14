@@ -8,13 +8,13 @@ OPENSSL_FILE="openssl-1.1.0h.tar.gz"
 NGHTTP_URL_BASE="https://github.com/nghttp2/nghttp2/releases/download/v1.31.0/"
 NGHTTP_FILE="nghttp2-1.31.0.tar.gz"
 
-APR_URL_BASE="http://mirrors.whoishostingthis.com/apache/apr/"
+APR_URL_BASE="https://archive.apache.org/dist/apr/"
 APR_FILE="apr-1.6.3.tar.gz"
 
-APR_UTIL_URL_BASE="http://mirrors.whoishostingthis.com/apache/apr/"
+APR_UTIL_URL_BASE="https://archive.apache.org/dist/apr/"
 APR_UTIL_FILE="apr-util-1.6.1.tar.gz"
 
-APACHE_URL_BASE="http://mirrors.whoishostingthis.com/apache/httpd/"
+APACHE_URL_BASE="https://archive.apache.org/dist/httpd/"
 APACHE_FILE="httpd-2.4.33.tar.gz"
 
 CURL_URL_BASE="https://curl.haxx.se/download/"
