@@ -380,6 +380,7 @@ function main() {
     fi
     
     # Execute setup steps
+    echo "Starting to run functions..."
     backup_configs
     install_2fa_packages
     configure_ssh_2fa
