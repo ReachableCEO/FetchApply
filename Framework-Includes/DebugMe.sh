@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function DebugMe() {
  [[ $script_debug = 1 ]] && "$@" || :
 
