@@ -247,7 +247,7 @@ EOF
             chmod +x "/tmp/setup-2fa-$user.sh"
             
             # Instructions for user setup
-            cat > "/home/$user/2fa-setup-instructions.txt" << EOF
+            cat > "~$user/2fa-setup-instructions.txt" << EOF
 TSYS Two-Factor Authentication Setup Instructions
 ==============================================
 
@@ -276,7 +276,7 @@ Without them, you may be locked out if you lose your phone.
 For support, contact your system administrator.
 EOF
             
-            chown "$user:$user" "/home/$user/2fa-setup-instructions.txt"
+            chown "$user:$user" "~$user/2fa-setup-instructions.txt"
             print_info "2FA setup prepared for user: $user"
         else
             print_info "User $user not found, skipping"
