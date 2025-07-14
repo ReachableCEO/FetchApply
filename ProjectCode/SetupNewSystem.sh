@@ -358,7 +358,7 @@ function secharden-auto-upgrades() {
 
 function secharden-2fa() {
   print_info "Now running $FUNCNAME"
-  #curl --silent ${DL_ROOT}/Modules/Security/secharden-2fa.sh|$(which bash)
+  bash ./Modules/Security/secharden-2fa.sh
   print_info "Completed running $FUNCNAME"
 }
 
