@@ -36,19 +36,19 @@ function backup_configs() {
     # Backup SSH configuration
     if [[ -f "$SSH_CONFIG" ]]; then
         cp "$SSH_CONFIG" "$BACKUP_DIR/sshd_config.bak"
-        print_success "SSH config backed up"
+        print_info "SSH config backed up"
     fi
     
     # Backup PAM configurations
     if [[ -d "$PAM_CONFIG_DIR" ]]; then
         cp -r "$PAM_CONFIG_DIR" "$BACKUP_DIR/pam.d.bak"
-        print_success "PAM configs backed up"
+        print_info "PAM configs backed up"
     fi
     
     # Backup Cockpit configuration if exists
     if [[ -f "$COCKPIT_CONFIG" ]]; then
         cp "$COCKPIT_CONFIG" "$BACKUP_DIR/cockpit.conf.bak"
-        print_success "Cockpit config backed up"
+        print_info "Cockpit config backed up"
     fi
     
     print_info "Backup completed: $BACKUP_DIR"
@@ -65,7 +65,7 @@ function install_2fa_packages() {
     # Install QR code generator for terminal display
     apt-get install -y libpam-google-authenticator qrencode
     
-    print_success "2FA packages installed successfully"
+    print_info "2FA packages installed successfully"
 }
 
 # Configure SSH for 2FA
@@ -94,7 +94,7 @@ function configure_ssh_2fa() {
         sed -i 's/^AuthenticationMethods.*/AuthenticationMethods publickey,keyboard-interactive/' "$SSH_CONFIG"
     fi
     
-    print_success "SSH configuration updated"
+    print_info "SSH configuration updated"
 }
 
 # Configure PAM for 2FA
@@ -140,7 +140,7 @@ session required pam_selinux.so open
 @include common-password
 EOF
     
-    print_success "PAM configuration updated for SSH 2FA"
+    print_info "PAM configuration updated for SSH 2FA"
 }
 
 # Configure Cockpit for 2FA
@@ -187,7 +187,7 @@ session required pam_selinux.so open
 session optional pam_motd.so
 EOF
     
-    print_success "Cockpit 2FA configuration completed"
+    print_info "Cockpit 2FA configuration completed"
 }
 
 # Configure Webmin for 2FA (if installed)
@@ -213,7 +213,7 @@ function configure_webmin_2fa() {
         # Start webmin service
         systemctl start webmin || true
         
-        print_success "Webmin 2FA configuration completed"
+        print_info "Webmin 2FA configuration completed"
     else
         print_info "Webmin not found, skipping configuration"
     fi
@@ -275,9 +275,9 @@ For support, contact your system administrator.
 EOF
             
             chown "$user:$user" "/home/$user/2fa-setup-instructions.txt"
-            print_success "2FA setup prepared for user: $user"
+            print_info "2FA setup prepared for user: $user"
         else
-            print_warning "User $user not found, skipping"
+            print_info "User $user not found, skipping"
         fi
     done
 }
@@ -289,7 +289,7 @@ function restart_services() {
     # Test SSH configuration
     if sshd -t; then
         systemctl restart sshd
-        print_success "SSH service restarted"
+        print_info "SSH service restarted"
     else
         print_error "SSH configuration test failed"
         return 1
@@ -298,13 +298,13 @@ function restart_services() {
     # Restart Cockpit if installed
     if systemctl is-enabled cockpit.socket &>/dev/null; then
         systemctl restart cockpit.socket
-        print_success "Cockpit service restarted"
+        print_info "Cockpit service restarted"
     fi
     
     # Restart Webmin if installed
     if systemctl is-enabled webmin &>/dev/null; then
         systemctl restart webmin
-        print_success "Webmin service restarted"
+        print_info "Webmin service restarted"
     fi
 }
 
@@ -314,7 +314,7 @@ function validate_2fa_setup() {
     
     # Check if Google Authenticator is installed
     if command -v google-authenticator &>/dev/null; then
-        print_success "Google Authenticator installed"
+        print_info "Google Authenticator installed"
     else
         print_error "Google Authenticator not found"
         return 1
@@ -322,7 +322,7 @@ function validate_2fa_setup() {
     
     # Check SSH configuration
     if grep -q "AuthenticationMethods publickey,keyboard-interactive" "$SSH_CONFIG"; then
-        print_success "SSH 2FA configuration valid"
+        print_info "SSH 2FA configuration valid"
     else
         print_error "SSH 2FA configuration invalid"
         return 1
@@ -330,7 +330,7 @@ function validate_2fa_setup() {
     
     # Check PAM configuration
     if grep -q "pam_google_authenticator.so" "$PAM_CONFIG_DIR/sshd"; then
-        print_success "PAM 2FA configuration valid"
+        print_info "PAM 2FA configuration valid"
     else
         print_error "PAM 2FA configuration invalid"
         return 1
@@ -338,13 +338,13 @@ function validate_2fa_setup() {
     
     # Check service status
     if systemctl is-active sshd &>/dev/null; then
-        print_success "SSH service is running"
+        print_info "SSH service is running"
     else
         print_error "SSH service is not running"
         return 1
     fi
     
-    print_success "2FA validation completed successfully"
+    print_info "2FA validation completed successfully"
 }
 
 # Display final instructions
@@ -358,15 +358,15 @@ function show_final_instructions() {
         print_info "- Webmin administration panel"
     fi
     
-    print_warning "IMPORTANT: Complete user setup immediately!"
-    print_warning "1. Check /home/*/2fa-setup-instructions.txt for user setup"
-    print_warning "2. Run setup scripts for each user"
-    print_warning "3. Test 2FA before logging out"
+    print_info "IMPORTANT: Complete user setup immediately!"
+    print_info "1. Check /home/*/2fa-setup-instructions.txt for user setup"
+    print_info "2. Run setup scripts for each user"
+    print_info "3. Test 2FA before logging out"
     
     print_info "Backup location: $BACKUP_DIR"
     print_info "To disable 2FA, restore configurations from backup"
     
-    print_success "2FA setup completed successfully!"
+    print_info "2FA setup completed successfully!"
 }
 
 # Main execution
