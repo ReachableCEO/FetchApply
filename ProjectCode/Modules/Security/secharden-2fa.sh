@@ -7,7 +7,13 @@
 set -euo pipefail
 
 # Source framework functions
-PROJECT_ROOT="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/../.."
+# Script can be called from different contexts, so use absolute path resolution
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+PROJECT_ROOT="$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")"
+
+# Set up framework variables expected by includes
+export PROJECT_ROOT_PATH="$PROJECT_ROOT"
+
 source "$PROJECT_ROOT/Framework-Includes/PrettyPrint.sh"
 source "$PROJECT_ROOT/Framework-Includes/Logging.sh"
 source "$PROJECT_ROOT/Framework-Includes/ErrorHandling.sh"
