@@ -27,7 +27,7 @@ for project_include_file in ../../../Project-Includes/*; do
 done
 
 #Framework variables are read from hee
-source $PROJECT_ROOT_PATH/Framework-ConfigFiles/FrameworkVars
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd | grep -c subodev || true)"
