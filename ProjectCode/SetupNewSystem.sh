@@ -345,7 +345,7 @@ function global-postPackageConfiguration() {
 function secharden-ssh() {
   print_info "Now running $FUNCNAME"
 
-  cd ./Modules/Security
+  cd ./Modules/Security || exit
   bash ./secharden-ssh.sh
   cd -
 
@@ -354,24 +354,32 @@ function secharden-ssh() {
 
 function secharden-wazuh() {
   print_info "Now running $FUNCNAME"
-  cd ./Modules/Security
-  bash ./Modules/Security/secharden-wazuh.sh
+  cd ./Modules/Security || exit
+  bash ./secharden-wazuh.sh
   cd -
   print_info "Completed running $FUNCNAME"
 }
 
 function secharden-2fa() {
   print_info "Now running $FUNCNAME"
-  cd ./Modules/Security
-  bash ./Modules/Security/secharden-2fa.sh
+  cd ./Modules/Security || exit
+  bash ./secharden-2fa.sh
   cd -
   print_info "Completed running $FUNCNAME"
 }
 
 function secharden-scap-stig() {
   print_info "Now running $FUNCNAME"
-  cd ./Modules/Security
-  bash ./Modules/Security/secharden-scap-stig.sh
+  cd ./Modules/Security || exit
+  bash ./secharden-scap-stig.sh
+  cd -
+  print_info "Completed running $FUNCNAME"
+}
+
+function secharden-agents() {
+  print_info "Now running $FUNCNAME"
+  cd ./Modules/Security || exit
+  bash ./secharden-audit-agents.sh
   cd -
   print_info "Completed running $FUNCNAME"
 }
@@ -383,11 +391,6 @@ function secharden-auto-upgrades() {
 }
 
 
-function secharden-agents() {
-  print_info "Now running $FUNCNAME"
-  #curl --silent ${DL_ROOT}/Modules/Security/secharden-audit-agents.sh|$(which bash)
-  print_info "Completed running $FUNCNAME"
-}
 
 
 ####################################################################################################
