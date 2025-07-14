@@ -14,6 +14,8 @@ One of those functions is the provisoning of Linux servers. This repository is t
 
 In the future it will be used via FetchApply https://github.com/P5vc/fetch-apply
 
-It is invoked via
+## Usage
 
-curl https://dl.knownelement.com/KNEL/FetchApply/SetupNewSystem.sh |/bin/bash
+git clone this repo
+cd FetchApply/ProjectCode
+bash SetupNewSystem.sh
