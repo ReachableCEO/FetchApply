@@ -7,8 +7,7 @@
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../../../)"
 
-#Framework variables are read from hee
-
+#Framework variables are read from here
 
 export GIT_VENDOR_PATH_ROOT
 GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
