@@ -13,7 +13,7 @@ KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
 
 source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
-for framework_include_file in $KNELShellFrameworkRoot/framework-includes/*; do
+for framework_include_file in $KNELShellFrameworkRoot/Framework-Includes/*; do
   source "$framework_include_file"
 done
 
