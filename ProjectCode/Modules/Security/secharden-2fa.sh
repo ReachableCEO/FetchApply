@@ -27,7 +27,7 @@ COCKPIT_CONFIG="/etc/cockpit/cockpit.conf"
 # Create backup directory
 mkdir -p "$BACKUP_DIR"
 
-print_header "TSYS Two-Factor Authentication Setup"
+print_info "TSYS Two-Factor Authentication Setup"
 
 # Backup existing configurations
 function backup_configs() {
@@ -349,7 +349,7 @@ function validate_2fa_setup() {
 
 # Display final instructions
 function show_final_instructions() {
-    print_header "2FA Setup Completed"
+    print_info "2FA Setup Completed"
     
     print_info "Two-Factor Authentication has been configured for:"
     print_info "- SSH (requires key + 2FA token)"
