@@ -4,15 +4,16 @@
 # Implements 2FA for SSH, Cockpit, and Webmin services
 # Uses Google Authenticator (TOTP) for time-based tokens
 
-# Script can be called from different contexts, so use absolute path resolution
-SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-PROJECT_ROOT="$(dirname "$(dirname "$(dirname "$SCRIPT_DIR")")")"
 
-# Set up framework variables expected by includes
-export PROJECT_ROOT_PATH="$PROJECT_ROOT"
+#####
+#Core framework functions...
+#####
 
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../../../)"
+
+#Framework variables are read from hee
+
 
 export GIT_VENDOR_PATH_ROOT
 GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
@@ -20,18 +21,18 @@ GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
 export KNELShellFrameworkRoot
 KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
 
-#Framework variables are read from hee
 source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
-# Source framework functions
 for framework_include_file in $KNELShellFrameworkRoot/Framework-Includes/*; do
   source "$framework_include_file"
 done
 
-for project_include_file in ../Project-Includes/*; do
+for project_include_file in ../../../Project-Includes/*; do
   source "$project_include_file"
 done
 
+#Framework variables are read from hee
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
 # 2FA Configuration
 BACKUP_DIR="/root/backup/2fa"

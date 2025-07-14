@@ -9,6 +9,7 @@ PROJECT_ROOT_PATH="$(realpath ../../../)"
 
 #Framework variables are read from hee
 
+
 export GIT_VENDOR_PATH_ROOT
 GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
 
@@ -24,6 +25,9 @@ done
 for project_include_file in ../../../Project-Includes/*; do
   source "$project_include_file"
 done
+
+#Framework variables are read from hee
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
 
 # We don't want to run this on the wazuh server, otherwise bad things happen...
