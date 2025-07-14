@@ -25,9 +25,7 @@ SSH_CONFIG="/etc/ssh/sshd_config"
 COCKPIT_CONFIG="/etc/cockpit/cockpit.conf"
 
 # Create backup directory
-echo "Creating backup dir..."
 mkdir -p "$BACKUP_DIR"
-echo "Created backup dir..."
 
 print_info "TSYS Two-Factor Authentication Setup"
 
@@ -380,7 +378,6 @@ function main() {
     fi
     
     # Execute setup steps
-    echo "Starting to run functions..."
     backup_configs
     install_2fa_packages
     configure_ssh_2fa
