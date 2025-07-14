@@ -401,10 +401,10 @@ global-postPackageConfiguration
 secharden-ssh
 secharden-wazuh
 secharden-scap-stig
+secharden-2fa
 #secharden-agents
 #secharden-auto-upgrades
 
-#secharden-2fa
 #auth-cloudron-ldap
 
 print_info "Execution ended at $CURRENT_TIMESTAMP..."
