@@ -19,13 +19,15 @@ source "$PROJECT_ROOT/Framework-Includes/Logging.sh"
 source "$PROJECT_ROOT/Framework-Includes/ErrorHandling.sh"
 
 # 2FA Configuration
-BACKUP_DIR="/root/backup/2fa-$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="/root/backup/2fa"
 PAM_CONFIG_DIR="/etc/pam.d"
 SSH_CONFIG="/etc/ssh/sshd_config"
 COCKPIT_CONFIG="/etc/cockpit/cockpit.conf"
 
 # Create backup directory
+echo "Creating backup dir..."
 mkdir -p "$BACKUP_DIR"
+echo "Created backup dir..."
 
 print_info "TSYS Two-Factor Authentication Setup"
 
