@@ -1,12 +1,33 @@
 #!/bin/bash
 
-for framework_include_file in ../../../Framework-Includes/*; do
+#####
+#Core framework functions...
+#####
+
+export PROJECT_ROOT_PATH
+PROJECT_ROOT_PATH="$(realpath ../)"
+
+#Framework variables are read from hee
+
+
+export GIT_VENDOR_PATH_ROOT
+GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
+
+export KNELShellFrameworkRoot
+KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
+
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
+
+for framework_include_file in $KNELShellFrameworkRoot/framework-includes/*; do
   source "$framework_include_file"
 done
 
-for project_include_file in ../../../Project-Includes/*; do
+for project_include_file in ../Project-Includes/*; do
   source "$project_include_file"
 done
+
+#Framework variables are read from hee
+source $PROJECT_ROOT_PATH/Framework-ConfigFiles/FrameworkVars
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd | grep -c subodev || true)"

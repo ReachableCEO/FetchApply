@@ -1,31 +1,30 @@
 #!/bin/bash
 
-set -o errexit
-set -o nounset
-set -o pipefail
-set -o functrace
+#####
+#Core framework functions...
+#####
 
-export PS4='(${BASH_SOURCE}:${LINENO}): - [${SHLVL},${BASH_SUBSHELL},$?] $ '
+export PROJECT_ROOT_PATH
+PROJECT_ROOT_PATH="$(realpath ../../)"
 
-function error_out()
-{
-        echo "Bailing out. See above for reason...."
-        exit 1
-}
+#Framework variables are read from hee
 
-function handle_failure() {
-  local lineno=$1
-  local fn=$2
-  local exitstatus=$3
-  local msg=$4
-  local lineno_fns=${0% 0}
-  if [[ "$lineno_fns" != "-1" ]] ; then
-    lineno="${lineno} ${lineno_fns}"
-  fi
-  echo "${BASH_SOURCE[0]}: Function: ${fn} Line Number : [${lineno}] Failed with status ${exitstatus}: $msg"
-}
+export GIT_VENDOR_PATH_ROOT
+GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
 
-trap 'handle_failure "${BASH_LINENO[*]}" "$LINENO" "${FUNCNAME[*]:-script}" "$?" "$BASH_COMMAND"' ERR
+export KNELShellFrameworkRoot
+KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
+
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
+
+for framework_include_file in $KNELShellFrameworkRoot/framework-includes/*; do
+  source "$framework_include_file"
+done
+
+for project_include_file in ../Project-Includes/*; do
+  source "$project_include_file"
+done
+
 
 export DL_ROOT
 DL_ROOT="https://dl.knownelement.com/KNEL/FetchApply/"

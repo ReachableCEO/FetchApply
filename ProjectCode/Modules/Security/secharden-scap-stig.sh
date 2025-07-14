@@ -1,16 +1,28 @@
 #!/bin/bash
 
+#####
+#Core framework functions...
+#####
+
+export PROJECT_ROOT_PATH
+PROJECT_ROOT_PATH="$(realpath ../../)"
+
 #Framework variables are read from hee
-source $PROJECT_ROOT_PATH/Framework-ConfigFiles/FrameworkVars
 
-#Boilerplate and support functions
+export GIT_VENDOR_PATH_ROOT
+GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
 
-for framework_include_file in ../Framework-Includes/*; do
-	source "$framework_include_file"
+export KNELShellFrameworkRoot
+KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
+
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
+
+for framework_include_file in $KNELShellFrameworkRoot/framework-includes/*; do
+  source "$framework_include_file"
 done
 
 for project_include_file in ../Project-Includes/*; do
-	source "$project_include_file"
+  source "$project_include_file"
 done
 
 # Actual script logic starts here

@@ -1,19 +1,25 @@
-#Boilerplate and support functions
-FrameworkIncludeFiles="$(ls -1 --color=none ../../../Framework-Includes/*)"
+#!/bin/bash
 
-IFS=$'\n\t'
-for file in ${FrameworkIncludeFiles[@]}; do
-	source "$file"
+export PROJECT_ROOT_PATH
+PROJECT_ROOT_PATH="$(realpath ../../)"
+
+#Framework variables are read from hee
+
+export GIT_VENDOR_PATH_ROOT
+GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
+
+export KNELShellFrameworkRoot
+KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
+
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
+
+for framework_include_file in $KNELShellFrameworkRoot/framework-includes/*; do
+  source "$framework_include_file"
 done
-unset IFS
 
-ProjectIncludeFiles="$(ls -1 --color=none ../../../Project-Includes/*)"
-IFS=$'\n\t'
-for file in ${ProjectIncludeFiles[@]}; do
-	source "$file"
+for project_include_file in ../Project-Includes/*; do
+  source "$project_include_file"
 done
-unset IFS
-
 
 print_info "Setting up librenms agent..."
 
