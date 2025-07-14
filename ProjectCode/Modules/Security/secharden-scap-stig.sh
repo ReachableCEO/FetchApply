@@ -1,13 +1,15 @@
 #!/bin/bash
 
-#####
+
+#########################################
 #Core framework functions...
-#####
+#########################################
 
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../../../)"
 
 #Framework variables are read from hee
+
 
 export GIT_VENDOR_PATH_ROOT
 GIT_VENDOR_PATH_ROOT="$PROJECT_ROOT_PATH/vendor/git@git.knownelement.com/29418/"
@@ -25,8 +27,13 @@ for project_include_file in ../../../Project-Includes/*; do
   source "$project_include_file"
 done
 
-# Actual script logic starts here
+#Framework variables are read from hee
+source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
+
+#########################################
+# Core script code begins here
+#########################################
 
 # Sourced from
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#####
+#########################################
 #Core framework functions...
-#####
+#########################################
 
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../../../)"
@@ -28,6 +28,11 @@ done
 
 #Framework variables are read from hee
 source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
+
+
+#########################################
+# Core script code begins here
+#########################################
 
 export SUBODEV_CHECK
 SUBODEV_CHECK="$(getent passwd | grep -c subodev || true)"
