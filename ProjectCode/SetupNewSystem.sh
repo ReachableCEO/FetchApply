@@ -354,7 +354,25 @@ function secharden-ssh() {
 
 function secharden-wazuh() {
   print_info "Now running $FUNCNAME"
+  cd ./Modules/Security
   bash ./Modules/Security/secharden-wazuh.sh
+  cd -
+  print_info "Completed running $FUNCNAME"
+}
+
+function secharden-2fa() {
+  print_info "Now running $FUNCNAME"
+  cd ./Modules/Security
+  bash ./Modules/Security/secharden-2fa.sh
+  cd -
+  print_info "Completed running $FUNCNAME"
+}
+
+function secharden-scap-stig() {
+  print_info "Now running $FUNCNAME"
+  cd ./Modules/Security
+  bash ./Modules/Security/secharden-scap-stig.sh
+  cd -
   print_info "Completed running $FUNCNAME"
 }
 
@@ -364,11 +382,6 @@ function secharden-auto-upgrades() {
   print_info "Completed running $FUNCNAME"
 }
 
-function secharden-2fa() {
-  print_info "Now running $FUNCNAME"
-  bash ./Modules/Security/secharden-2fa.sh
-  print_info "Completed running $FUNCNAME"
-}
 
 function secharden-agents() {
   print_info "Now running $FUNCNAME"
@@ -376,11 +389,6 @@ function secharden-agents() {
   print_info "Completed running $FUNCNAME"
 }
 
-function secharden-scap-stig() {
-  print_info "Now running $FUNCNAME"
-  bash ./Modules/Security/secharden-scap-stig.sh
-  print_info "Completed running $FUNCNAME"
-}
 
 ####################################################################################################
 # Authentication
