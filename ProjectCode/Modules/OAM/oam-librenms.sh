@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PROJECT_ROOT_PATH
-PROJECT_ROOT_PATH="$(realpath ../../)"
+PROJECT_ROOT_PATH="$(realpath ../../../)"
 
 #Framework variables are read from hee
 
