@@ -156,6 +156,7 @@ function global-installPackages() {
     vim \
     command-not-found \
     lldpd \
+    ansible-core \
     net-tools \
     dos2unix \
     gpg \
