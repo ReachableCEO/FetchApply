@@ -4,6 +4,7 @@
 #Core framework functions...
 #####
 
+
 export PROJECT_ROOT_PATH
 PROJECT_ROOT_PATH="$(realpath ../)"
 
@@ -33,6 +34,9 @@ done
 #################
 
 apt-get -y install git sudo dmidecode curl
+
+export UBUNTU_CHECK
+UBUNTU_CHECK="$(distro | grep -c Ubuntu || true)"
 
 export IS_PHYSICAL_HOST
 IS_PHYSICAL_HOST="$(/usr/sbin/dmidecode -t System | grep -c Dell || true)"
@@ -105,18 +109,16 @@ function global-installPackages() {
 
   #Remove stuff we don't want
 
-  export UBUNTU_CHECK
-  UBUNTU_CHECK="$(distro | grep -c Ubuntu || true)"
-
-  if [ "$UBUNTU_CHECK" -eq 1 ]; then
-    apt-get --yes --purge remove chrony telnet inetutils-telnet
-  fi
-
-  if [ "$UBUNTU_CHECK" -eq 0 ]; then
-    apt-get --yes --purge remove systemd-timesyncd chrony telnet inetutils-telnet
-  fi
-
-  #export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" --purge remove nano
+  export DEBIAN_FRONTEND="noninteractive" \
+  && apt-get -qq --yes --purge \
+  remove \
+    systemd-timesyncd \
+    chrony \
+    telnet \
+    inetutils-telnet \
+    nano \
+    multipath-tools \
+    || true
 
   # add stuff we want
 
