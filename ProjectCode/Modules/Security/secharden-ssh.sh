@@ -19,11 +19,11 @@ KNELShellFrameworkRoot="$GIT_VENDOR_PATH_ROOT/KNEL/KNELShellFramework"
 source $KNELShellFrameworkRoot/Framework-ConfigFiles/FrameworkVars
 
 for framework_include_file in $KNELShellFrameworkRoot/Framework-Includes/*; do
-  source "$framework_include_file"
+    source "$framework_include_file"
 done
 
 for project_include_file in ../../../Project-Includes/*; do
-  source "$project_include_file"
+    source "$project_include_file"
 done
 
 #Framework variables are read from hee
@@ -51,30 +51,30 @@ SUBODEV_SSH_DIR="/home/subodev/.ssh"
 
 
 if [ ! -d $ROOT_SSH_DIR ]; then
-  mkdir /root/.ssh/
+    mkdir /root/.ssh/
 fi
 
-curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys >/root/.ssh/authorized_keys
+cat ../../ConfigFiles/SSH/AuthorizedKeys/root-ssh-authorized-keys >/root/.ssh/authorized_keys
 chmod 400 /root/.ssh/authorized_keys
 chown root: /root/.ssh/authorized_keys
 
 if [ "$LOCALUSER_CHECK" -gt 0 ]; then
-  if [ ! -d $LOCALUSER_SSH_DIR ]; then
-    mkdir -p /home/localuser/.ssh/
-  fi
-
-  curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys >/home/localuser/.ssh/authorized_keys &&
+    if [ ! -d $LOCALUSER_SSH_DIR ]; then
+        mkdir -p /home/localuser/.ssh/
+    fi
+    
+    cat ../../ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys >/home/localuser/.ssh/authorized_keys
     chown localuser /home/localuser/.ssh/authorized_keys &&
     chmod 400 /home/localuser/.ssh/authorized_keys
 fi
 
 if [ "$SUBODEV_CHECK" = 1 ]; then
-
-  if [ ! -d $SUBODEV_SSH_DIR ]; then
-    mkdir /home/subodev/.ssh/
-  fi
-
-  curl --silent "${DL_ROOT}"/ProjectCode/ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys >/home/subodev/.ssh/authorized_keys &&
+    
+    if [ ! -d $SUBODEV_SSH_DIR ]; then
+        mkdir /home/subodev/.ssh/
+    fi
+    
+    cat ../../ConfigFiles/SSH/AuthorizedKeys/localuser-ssh-authorized-keys >/home/subodev/.ssh/authorized_keys
     chmod 400 /home/subodev/.ssh/authorized_keys &&
     chown subodev: /home/subodev/.ssh/authorized_keys
 fi
@@ -82,9 +82,9 @@ fi
 export DEV_WORKSTATION_CHECK
 DEV_WORKSTATION_CHECK="$(hostname | egrep -c 'subopi-dev|CharlesDevServer' || true)"
 
-  if [ "$DEV_WORKSTATION_CHECK" -eq 0 ]; then
-
-cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
+if [ "$DEV_WORKSTATION_CHECK" -eq 0 ]; then
+    
+    cat ../../ConfigFiles/SSH/Configs/tsys-sshd-config >/etc/ssh/sshd_config
 fi
 
 
@@ -94,8 +94,8 @@ export UBUNTU_CHECK
 UBUNTU_CHECK="$(distro | grep -c Ubuntu||true)"
 
 if [ "$UBUNTU_CHECK" -ne 1 ]; then
-  cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf >/etc/ssh/sshd_config.d/ssh-audit_hardening.conf
-  chmod og-rwx /etc/ssh/sshd_config.d/*
+    cat ../../ConfigFiles/SSH/Configs/ssh-audit-hardening.conf >/etc/ssh/sshd_config.d/ssh-audit_hardening.conf
+    chmod og-rwx /etc/ssh/sshd_config.d/*
 fi
 
 # Perms on sshd_config
