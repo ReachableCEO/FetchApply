@@ -135,7 +135,6 @@ function global-installPackages() {
     ncdu \
     iftop \
     iotop \
-    latencytop \
     cockpit \
     cockpit-bridge \
     cockpit-doc \
@@ -145,7 +144,6 @@ function global-installPackages() {
     cockpit-sosreport \
     cockpit-storaged \
     cockpit-system \
-    cockpit-tests \
     cockpit-ws \
     nethogs \
     sysstat \
@@ -208,6 +206,15 @@ function global-installPackages() {
   if [[ $IS_KVM_GUEST = 1 ]]; then
     apt -y install qemu-guest-agent
   fi
+
+  if [[ $KALI_CHECK -eq 0 ]];then
+  DEBIAN_FRONTEND="noninteractive" apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
+    latencytop \
+    cockpit-tests 
+  fi
+
+    latencytop \
+    cockpit-tests \
 
   if [[ $IS_PHYSICAL_HOST -gt 0 ]]; then
     export DEBIAN_FRONTEND="noninteractive" && apt-get -qq --yes -o Dpkg::Options::="--force-confold" install \
