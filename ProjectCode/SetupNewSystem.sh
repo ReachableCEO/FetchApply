@@ -106,9 +106,13 @@ function global-installPackages() {
     chrony \
     telnet \
     inetutils-telnet \
+    wpasupplicant \
+    modemmanager \
     nano \
     multipath-tools \
     || true
+
+    apt-get --purge autoremove
 
   # add stuff we want
 
